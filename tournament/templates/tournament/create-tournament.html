@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %} battleground | India {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="layout-px-spacing">
+    <form action="{% url 'create-tournament' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+        <div class="row mt-4">
+            
+            <div class="col-xl-3 col-lg-6 col-md-6 mb-4">
+                <div class="card b-l-card-1 h-100" style="-webkit-box-shadow: 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12), 0 3px 5px -1px rgba(0,0,0,.2); -moz-box-shadow: 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12), 0 3px 5px -1px rgba(0,0,0,.2); box-shadow: 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12), 0 3px 5px -1px rgba(0,0,0,.2); ">
+                    <div class="card-body">
+                        
+                        <!-- <img class="card-img-top rounded" src="{% static 'assets/img/400x300.jpg' %}" alt="Card image cap"> -->
+                            <div class="seperator-header text-center">
+                                <h4 class="">Upload Banner</h4>
+                            </div>
+                            <div id="fuSingleFile" class="col-lg-12">
+                                <div class="custom-file-container" data-upload-id="myFirstImage">
+                                    <label>Leave blank to autoselect<a href="javascript:void(0)" class="custom-file-container__image-clear" title="Clear Image"></a></label>
+                                    <label class="custom-file-container__custom-file" >
+                                        <input name="myfile" type="file" class="custom-file-container__custom-file__custom-file-input">
+                                        <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
+                                        <span class="custom-file-container__custom-file__custom-file-control"></span>
+                                    </label>
+                                    <div class="custom-file-container__image-preview"></div>
+                                </div>
+                            </div>
+                            <div class="form-group mt-3">
+                                <input name="tournament_name" type="text" class="form-control" placeholder="Tournament Name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <input name="tournament_date" value="Select Date" class="form-control" type="date" placeholder="Select Date.." required>
+                            </div>
+                            <div class="form-group">
+                                <input name="tournament_time" type="time" class="form-control flatpickr active" required>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-9 col-lg-6 col-md-6 col-sm-12 col-12" style="margin-bottom:24px;">
+                <div class="statbox widget box box-shadow">
+                    <div class="seperator-header text-center">
+                        <h4 class="">provide additional data</h4>
+                    </div>
+                    <div class="widget-content widget-content-area">
+                        <div class="form-row mb-4">
+                            <div class="form-group col-md-6">
+                                <label for="inputCity">Game</label>
+                                <select name="tournament_game" id="inputState1" class="form-control" required>
+                                    <!-- <option selected="">Choose...</option> -->
+                                    <option>PUBG</option>
+                                </select>
+
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="inputState">Team type</label>
+                                <select name="tournament_type" id="inputState2" class="form-control" required>
+                                    <!-- <option selected="">Choose...</option> -->
+                                    <option>Solo</option>
+                                    <option>Duo</option>
+                                    <option>Squad</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="inputZip">Number of slots</label>
+                                <input name="tournament_slots" type="number" class="form-control" min="1" max="100" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <textarea name="tournament_rules" id="demo1"></textarea>
+                    
+                    <button id="submit_btn" type="submit" class="invite-button btn btn-secondary mt-3">Create Tournament</button>     
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+{% block custom_js %}
+    <script src="{% static 'assets/js/libs/jquery-3.1.1.min.js' %}"></script>
+    <script src="{% static 'plugins/file-upload/file-upload-with-preview.min.js' %}"></script>
+    <script src="{% static 'plugins/editors/markdown/custom-markdown.js' %}"></script>
+    <script>
+        var firstUpload = new FileUploadWithPreview('myFirstImage');
+    </script>
+{% endblock %}
+
+
+{% endblock %}

@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+{% block title %} battleground | India {% endblock %}
+{% load static %}
+{% block content %}
+{% load event_status %}
+{% load humanize %}
+
+
+<div class="layout-px-spacing">
+
+    <div class="row layout-top-spacing">
+        
+        <div class="col-xl-9 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+            <div class="widget widget-chart-one">
+
+                <div class="row layout-top-spacing">
+                    <div id="custom_carousel" class="col-lg-12 layout-spacing ">
+                        <div class="widget-content searchable-container list">
+                            <div class="row">
+                                <div class="col-xl-4 col-lg-5 col-md-5 col-sm-7 filtered-list-search layout-spacing align-self-center">
+                                    <form class="form-inline my-2 my-lg-0">
+                                        <div class="">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                            <input type="text" class="form-control product-search" id="input-search" placeholder="Search Tournaments...">
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-xl-8 col-lg-7 col-md-7 col-sm-5 text-sm-right text-center layout-spacing align-self-center">
+                                    <div class="d-flex justify-content-sm-end justify-content-center">
+
+                                        {% if request.user.is_authenticated %}
+                                            <a href="{% url 'create-tournament' %}"><button style="float: right;" class="login-button btn btn-secondary mb-2"><b>Create Tourament</b></button></a>
+                                        {% else %}
+                                        <!-- <a href="{% url 'register' %}" style="float: right;" type="button" class="login-button btn btn-secondary mb-2">
+                                            Create Account
+                                        </a> -->
+                                        <butto style="float: right;" type="button" class="login-button btn btn-secondary" data-toggle="modal" data-target="#loginModal">
+                                            Login to Create
+                                        </button> 
+            
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="fs2Basic" class="col-lg-12 layout-spacing">
+                                <div class="collapse" id="filterTournaments">
+                                    <div class="widget-content widget-content-area">
+                                        <div class="row">
+                                            <div class="col">
+                                                <select class="form-control  basic">
+                                                    <option selected="selected">Most participants</option>
+                                                    <option>least participants</option>
+                                                    <option>Recently added</option>
+                                                </select>
+                                            </div>
+                                            <div class="col">
+                                                <select class="form-control  basic">
+                                                    <option selected="selected">Upcoming</option>
+                                                    <option>Live</option>
+                                                    <option>Completed</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    
+                                        <div class="col text-center">
+                                            <button style="float: center;" type="button" class="invite-button btn btn-warning mb-2">Apply</button>
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                            <div class="filter-checkbox-container">
+                                {% for status in tournament_status %}
+                                    <div class="ck-button">
+                                        <label>
+                                            <input href="/" id="filter-status" type="checkbox" class="filter-checkbox" data-filter="status" value="{{status}}" /> <span>{{status}}</span>
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="searchable-items grid infinite-container" id="filter-tournament-status">
+                                <div style="display:none;" class="filter-loader">
+                                    <div class="spinner-border spinner-border-reverse align-self-center text-secondary"></div>
+                                </div>
+                                {% for tournament in tournaments %}
+                                    <div class="items infinite-item">
+                                        <!-- <div class="card item-content"> -->
+                                            <div class="widget-card box box-shadow">
+                                                
+                                                <a href="{% url 'tournament-detail' tournament.id %}"><img class="card-img-top" style="border-radius:0.75rem!important;" src="{{tournament.banner.url}}" alt="Card image cap"></a>
+                                                <div class="user-meta-info">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <a href="{% url 'tournament-detail' tournament.id %}"><p class="tournament-name" data-name="Tourname Name"> <b>{{tournament.tournament_name}}</b></p></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-1">
+                                                    <div class="col">
+                                                        <span class="badge badge-primary">{{tournament.game_type}}</span>
+                                                        <span class="badge badge-primary">{{tournament.team_type}}</span>
+                                                        <span class="badge badge-primary">{{tournament.slots}}</span>
+                                                    </div>
+                                                    
+                                                </div>
+                            
+                                                <div class="row mt-3">
+                                                    <div class="col">
+                                                        <div class="user-phone">
+                                                            <p style="color: azure;" class="info-title"><b>{{tournament.start_at|naturalday}}</b></p>
+                                                        </div>
+                                                    </div>
+                                
+                                                    {% if tournament.start_at|event_upcoming %}
+                                                            <div class="col">
+                                                                <p style="float: right;" class="user-work"><span class="badge badge-pill badge-success"> UPCOMING </span></p>
+                                                            </div>
+                                                        </div>  
+                                                        <div class="progress br-30 progress-sm">
+                                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    {% elif tournament.end_at|event_ended %}
+                                                            <div class="col">
+                                                                <p style="float: right;" class="user-work"><span class="badge badge-pill badge-dark"> END </span></p>
+                                                            </div>
+                                                        </div>  
+                                                        <div class="progress br-30 progress-sm">
+                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    {% elif tournament.start_at|event_live:tournament.end_at %}
+                                                            <div class="col">
+                                                                <p style="float: right;" class="user-work"><span class="badge badge-pill badge-danger"> LIVE </span></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="progress br-30 progress-sm">
+                                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    {% endif %}
+                                                    <div class="text-center">
+                                                        <p><b>Organized by {{tournament.admin}}</b></p>
+                                                    </div>
+                                            </div>
+                                            
+                                                                                
+                                        <!-- </div> -->
+                                    </div>
+                                    {% endfor %}    
+                            </div>
+                        </div>
+                    </div>
+                    <div id="searchLive" class="col-lg-12 layout-spacing"></div>
+
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if tournaments.has_next %}
+                                <a class="infinite-more-link" href="?page={{ tournaments.next_page_number }}">next</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% block topteams %}
+            {% include 'components/top-teams.html' %}
+        {% endblock %}
+
+    </div>
+</div>
+
+
+    {% block custom_js %}
+        <script src="{% static 'assets/js/libs/jquery.waypoints.min.js' %}"></script>
+        <script src="/static/assets/js/libs/infinite.min.js"></script>    
+        <script>
+
+            var infinite = new Waypoint.Infinite({
+                element: $('.infinite-container')[0],
+
+                offset: 'bottom-in-view',
+
+                onBeforePageLoad: function() {
+                    $('.loading').show();
+                },
+                onAfterPageLoad: function() {
+                    $('.loading').hide();
+                }
+            });
+
+            $(document).ready(function() {
+                
+                var filterLoader= $(".filter-loader");
+                $(".filter-checkbox").on('click',function(){
+                    var _filterObj = {};
+                    $(".filter-checkbox").each(function(index,ele){
+                        var _filterVal=$(this).val();
+                        var _filterKey=$(this).data('filter');
+
+                        
+
+                        _filterObj[_filterKey]=Array.from(document.querySelectorAll('input[data-filter='+_filterKey+']:checked')).map(function(el){
+                            return el.value;
+                        });
+                    });
+                    $.ajax({
+                        url:'/filter-tournament',
+                        data:_filterObj,
+                        dataType:'json',
+                        beforeSend:function() {
+                            filterLoader.css('display', 'block');
+                        },
+                        success:function(res){
+                            filterLoader.css('display', 'none');
+                            $('#filter-tournament-status').html(res.data);
+                        }
+                    });
+                });
+            });
+
+
+
+        </script>
+
+        
+    {% endblock %}
+
+{% endblock %}

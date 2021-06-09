@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+{% load static %}
+{% load account %}
+{% load socialaccount %}
+{% providers_media_js %}
+{% load crispy_forms_tags %}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <title>
+        {% block title %}
+        {% endblock %}
+    </title>
+    <link rel="icon" type="image/x-icon" href="{% static 'assets/img/favicon.ico' %}"/>
+
+    <link href="{% static 'assets/css/loader.css' %}" rel="stylesheet" type="text/css" />
+    <script src="{% static 'assets/js/loader.js' %}"></script>
+
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="{% static 'assets/css/plugins.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/css/scrollspyNav.css' %}" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    <link href="{% static 'assets/css/custom.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'assets/css/own.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'plugins/apex/apexcharts.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/jquery-ui/jquery-ui.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'plugins/select2/select2.min.css' %}" rel="stylesheet" type="text/css" >
+    <link href="{% static 'plugins/file-upload/file-upload-with-preview.min.css' %}" rel="stylesheet" type="text/css" />
+    <link href="{% static 'plugins/editors/markdown/simplemde.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'plugins/bootstrap-select/bootstrap-select.min.css' %}" rel="stylesheet" type="text/css" >
+
+    {% block custom_style %} {% endblock %}
+    
+</head>
+<body class="alt-menu sidebar-noneoverflow">
+    <!-- BEGIN LOADER -->
+    <div id="load_screen">
+        <div class="loader">
+            <div class="loader-content">
+                <div class="spinner-border spinner-border-reverse align-self-center text-secondary"></div>
+            </div>
+        </div>
+    </div>
+    <!--  END LOADER -->
+
+    <!--  BEGIN NAVBAR  -->
+    <div class="header-container fixed-top">
+        <header class="header navbar navbar-expand-sm expand-header">
+            <a href="javascript:void(0);" class="sidebarCollapse" data-placement="bottom"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></a>
+
+            <ul class="navbar-item flex-row ml-auto">
+
+                {% if request.user.is_authenticated %}
+                    <!-- <li class="nav-item dropdown language-dropdown">
+                        <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="language-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="{% static 'assets/img/ca.png' %}" class="flag-width" alt="flag">
+                        </a>
+                    </li> -->
+                    <li class="nav-item dropdown user-profile-dropdown  order-lg-0 order-1">
+                        <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-check"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                        </a>
+                        <div class="dropdown-menu position-absolute e-animated e-fadeInUp" aria-labelledby="userProfileDropdown">
+                            <div class="user-profile-section">                            
+                                <div class="media mx-auto">
+                                    <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="img-fluid mr-2" alt="avatar">
+                                    <div class="media-body">
+                                        <h5>{{request.user}}</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dropdown-item">
+                                <a href="{% url 'user-profile' %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> <span>My Profile</span>
+                                </a>
+                            </div>
+                            <div class="dropdown-item">
+                                <a href="{% url 'logout' %}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> <span>Log Out</span>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                {% else %}
+                    <li>
+                        <div id="content-mobile">
+                            <a href="{% url 'register' %}" type="button" class="signup-button btn btn-secondary mb-2 mr-2 mt-2">
+                                Register
+                            </a>
+                            <butto type="button" class="login-button btn btn-dark mb-2 mr-2 mt-2" data-toggle="modal" data-target="#loginModal">
+                                Login
+                            </button> 
+                        </div>
+                    </li>
+                {% endif %}
+                
+            </ul>
+        </header>
+    </div>
+    <!--  END NAVBAR  -->    
+
+    <!--  BEGIN MAIN CONTAINER  -->
+    <div class="main-container sidebar-closed sbar-open" id="container">
+
+        <div class="overlay"></div>
+        <div class="cs-overlay"></div>
+        <div class="search-overlay"></div>
+
+        <!--  BEGIN SIDEBAR  -->
+        <div class="sidebar-wrapper sidebar-theme">
+            
+            <nav id="sidebar">
+
+                <ul class="navbar-nav theme-brand flex-row  text-center">
+                    <li class="nav-item theme-logo">
+                        <a href="{% url 'home' %}">
+                            <img src="{% static 'assets/img/logo_heart_two.png' %}" class="navbar-logo" alt="logo">
+                        </a>
+                    </li>
+                    <li class="nav-item theme-text">
+                        <a href="{% url 'home' %}" class="nav-link"> KHELOBC </a>
+                    </li>
+                </ul>
+
+                <ul class="list-unstyled menu-categories" id="accordionExample">
+                    <li class="menu active">
+                        <a href="{% url 'home' %}" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>                                <span>Home</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li class="menu menu-heading">
+                        <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg><span>Apps</span></div>
+                    </li>
+
+                    <li class="menu">
+                        <a href="{% url 'view-tournaments' %}" aria-expanded="false" class="dropdown-toggle">
+                            <div class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-zap"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>                                
+                                <span>Tournaments</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    {% if request.user.is_authenticated %}
+                        <li class="menu">
+                            <a href="{% url 'user-profile' %}" aria-expanded="false" class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-target"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                                    <span>Organized by me</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="menu">
+                            <a href="{% url 'user-profile' %}" aria-expanded="false" class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                    <span>My Tournaments</span>
+                                </div>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="menu menu-heading">
+                        <div class="heading">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle"><circle cx="12" cy="12" r="10"></circle></svg>
+                            {% if request.user.is_authenticated %}
+                                <span>Apps</span>
+                            {% else %}
+                                <span>
+                                    <butto type="button" class="login-button btn btn-secondary" data-toggle="modal" data-target="#loginModal">
+                                        Login / Signup
+                                    </button>
+                                </span>
+                            {% endif %}
+                        </div>
+                    </li>
+
+                    {% if request.user.is_authenticated %}
+                        <li class="menu">
+                            <a href="{% url 'user-profile' %}" aria-expanded="false" class="dropdown-toggle">
+                                <div class="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                    <span>Profile</span>
+                                </div>
+                            </a>
+                        </li>
+                    {% endif  %}
+                </ul>           
+            </nav>
+        </div>
+        <!--  END SIDEBAR  -->
+
+
+        <!-- line -> 69 -->
+        <!-- <div class="modal fade modal-notification" id="standardModal" tabindex="-1" role="dialog" aria-labelledby="standardModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document" id="standardModalLabel">
+              <div class="modal-content">
+                <div class="modal-body text-center">
+                    <img class="d-block w-100 slide-image .carousel-image rounded" src="{% static 'assets/img/bg-hero.png' %}" alt="Top Banner">
+                    <div class="bottomleft"><h2>Build Your Own Empire</h2></div>
+                 </div>
+                 <div class="modal-footer justify-content-between">
+                    <a href="{% url 'create-tournament' %}"><button class="btn btn-warning" > Tournament</button></a>
+                    <span><b>OR</b></span>
+                    <button type="button" class="btn btn-primary"> Create Team</button>
+                  </div>
+              </div>
+            </div>
+        </div> -->
+
+          <!-- Modal -->
+          <div class="modal fade login-modal" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+
+                <div class="modal-header" id="loginModalLabel">
+                  <h4 style="color: cornsilk; font-family: monospace;" class="modal-title">Login</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                </div>
+                <div class="modal-body">
+                <form action="{% url 'login' %}?next={{request.path}}" class="mt-0" method="POST" action="">{% csrf_token %}
+                    <div class="form-group">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                      <input type="text" name="username" class="form-control mb-2" id="exampleInputEmail1" placeholder="Username">
+                    </div>
+                    <div class="form-group">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                      <input type="password" name="password" class="form-control mb-4" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <button type="submit" class="login-button btn btn-primary mt-2 mb-2 btn-block">Login</button>
+                  </form>
+                    <p class="text-center"><a href="{% url 'password_reset' %}">Forget password?</a></p>
+
+                  <div class="division">
+                        <span>OR</span>
+                  </div>
+                  <p style="font-family: monospace;"><b>Go faster with</b></p>
+                  
+                  <a href="{% provider_login_url 'discord' %}" type="submit" class="social-login-discord btn btn-primary mt-2 mb-2 btn-block"> <span style="float: left;" class="brand-name">Contiue with Discord</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="14" fill="currentColor" class="bi bi-discord" viewBox="0 0 16 16">
+                    <path d="M6.552 6.712c-.456 0-.816.4-.816.888s.368.888.816.888c.456 0 .816-.4.816-.888.008-.488-.36-.888-.816-.888zm2.92 0c-.456 0-.816.4-.816.888s.368.888.816.888c.456 0 .816-.4.816-.888s-.36-.888-.816-.888z"/>
+                    <path d="M13.36 0H2.64C1.736 0 1 .736 1 1.648v10.816c0 .912.736 1.648 1.64 1.648h9.072l-.424-1.48 1.024.952.968.896L15 16V1.648C15 .736 14.264 0 13.36 0zm-3.088 10.448s-.288-.344-.528-.648c1.048-.296 1.448-.952 1.448-.952-.328.216-.64.368-.92.472-.4.168-.784.28-1.16.344a5.604 5.604 0 0 1-2.072-.008 6.716 6.716 0 0 1-1.176-.344 4.688 4.688 0 0 1-.584-.272c-.024-.016-.048-.024-.072-.04-.016-.008-.024-.016-.032-.024-.144-.08-.224-.136-.224-.136s.384.64 1.4.944c-.24.304-.536.664-.536.664-1.768-.056-2.44-1.216-2.44-1.216 0-2.576 1.152-4.664 1.152-4.664 1.152-.864 2.248-.84 2.248-.84l.08.096c-1.44.416-2.104 1.048-2.104 1.048s.176-.096.472-.232c.856-.376 1.536-.48 1.816-.504.048-.008.088-.016.136-.016a6.521 6.521 0 0 1 4.024.752s-.632-.6-1.992-1.016l.112-.128s1.096-.024 2.248.84c0 0 1.152 2.088 1.152 4.664 0 0-.68 1.16-2.448 1.216z"/>
+                  </svg></a>
+                  <a href="{% provider_login_url 'google' %}" type="submit" class="social-login-google btn btn-primary mt-2 mb-2 btn-block">
+                    <span style="float: left;" class="brand-name">Contiue with Google</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-google" viewBox="0 0 16 16">
+                        <path d="M15.545 6.558a9.42 9.42 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.689 7.689 0 0 1 5.352 2.082l-2.284 2.284A4.347 4.347 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.792 4.792 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.702 3.702 0 0 0 1.599-2.431H8v-3.08h7.545z"/>
+                    </svg>
+                </a>
+                  <a href="{% provider_login_url 'facebook' %}" type="submit" class="social-login-facebook btn btn-primary mt-2 mb-2 btn-block"><span style="float: left;" class="brand-name">Contiue with Facebook</span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
+                    <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
+                  </svg></a>
+                  
+
+                </div>
+                <div class="modal-footer justify-content-center">
+                  <div class="forgot login-footer">
+    
+                        <span>Looking to <a href="{% url 'register' %}">create an account</a>?</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        <!--  BEGIN CONTENT AREA  -->
+        <div id="content" class="main-content">
+            {% include 'messages/messages.html' %}
+            {% block content %}
+
+            {% endblock %}
+        </div>
+        <!--  END CONTENT AREA  -->
+
+    </div>
+    <!-- END MAIN CONTAINER -->
+
+    <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+    <script src="{% static 'assets/js/libs/jquery-3.1.1.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{% static 'plugins/perfect-scrollbar/perfect-scrollbar.min.js' %}"></script>
+    <script src="{% static 'assets/js/app.min.js' %}"></script>
+
+    <script>
+        $(document).ready(function() {
+            App.init();
+            
+        });
+    </script>
+    <script src="{% static 'assets/js/custom.min.js' %}"></script>
+    <script src="{% static 'assets/js/myown.min.js' %}"></script>
+    <script src="{% static 'assets/js/scrollspyNav.js' %}"></script>
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+
+    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    <script src="{% static 'plugins/bootstrap-select/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'plugins/jquery-ui/jquery-ui.min.js' %}"></script>
+
+    <script src="{% static 'plugins/blockui/jquery.blockUI.min.js' %}"></script>
+    <script src="{% static 'plugins/select2/select2.min.js' %}"></script>
+    <script src="{% static 'plugins/select2/custom-select2.js' %}"></script>
+    <script src="{% static 'plugins/editors/markdown/simplemde.min.js' %}"></script>
+
+
+    {% block custom_js %}{% endblock %}
+</body>
+</html>

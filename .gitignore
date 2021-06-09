@@ -1,0 +1,6 @@
+migrations/
+stats/
+*.pyc
+media
+db.sqlite3
+static

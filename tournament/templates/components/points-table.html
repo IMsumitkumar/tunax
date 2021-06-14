@@ -1,0 +1,43 @@
+<div class="d-flex justify-content-center">
+    <button style="float: right; border-radius: 20px;" type="button"  class="login-button btn btn-secondary mb-2" data-toggle="modal" data-target="#pointsTableModal">
+        <b>points Table </b>
+    </button>
+</div>
+
+<div style="overflow-y:auto;" class="modal fade" id="pointsTableModal" tabindex="-1" role="dialog" aria-labelledby="pointsTableModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="model-text"> </h3>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table id="point-table" style="border-radius: 15px;" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Team Name</th>
+                                <th class="text-center">Kill Points</th>
+                                <th class="text-center">place points</th>
+                                <th class="text-center">Total pts</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resulttablebody">
+                            {% for t in teams %}
+                            <tr>
+                                <td class="text-center">{{t.teamname}}</td>
+                                <td class="text-center">{{t.killspts}}</td>
+                                <td class="text-center">{{t.placepts}}</td>
+                                <td class="text-center">{{t.total_points}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <button id="dwnld-ptable" class="invite-button btn btn-secondary">Download</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -53,3 +53,19 @@ def is_winner(user_id, pk):
         return True
     else:
         return False
+
+@register.filter('have_discord')
+def have_discord(server_id):
+    if len(str(server_id)) > 15:
+        return True
+    else:
+        return False
+
+@register.filter('have_youtube')
+def have_youtube(youtube_url):
+    if len(str(youtube_url)) > 10:
+        return True
+    else:
+        return False
+
+

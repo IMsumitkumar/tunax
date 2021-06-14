@@ -60,6 +60,8 @@ class TournaRegistration(models.Model):
     team_type = models.CharField(max_length=10, blank=False, null=False)
     slots = models.IntegerField()
     rules = RichTextField()
+    discord_server_id = models.PositiveBigIntegerField()
+    youtube_url = models.URLField()
     is_over = models.BooleanField(default=False)
     start_at = models.DateTimeField(null=True, blank=True)
     end_at = models.DateTimeField(null=True, blank=True)

@@ -50,7 +50,8 @@ def create_certificate(request, tournament_id):
             team = Teams.objects.get(pk=top_winner_obj.team.id)
             data_dict = {
                 "position": 1,
-                "tournament_name": tournament.tournament_name, 
+                "tournament_name": tournament.tournament_name,
+                "tournament_owner":  tournament.admin,
                 "team_owner": team.team_owner.username,
                 "team_name": team.team_name
             }

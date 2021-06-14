@@ -150,6 +150,8 @@ def create_tournament(request):
         tournament_type = request.POST.get('tournament_type')
         tournament_slots = request.POST.get('tournament_slots')
         tournament_rules = request.POST.get('tournament_rules')
+        discord_server_id = request.POST.get('discord_server_id') if request.POST.get('discord_server_id') else 0
+        youtube_url = request.POST.get('youtube_url')
 
 
         # if request ccontains tournament banner
@@ -162,7 +164,8 @@ def create_tournament(request):
                 date=tournament_date, time=tournament_time, 
                 banner=tournament_banner, game_type=tournament_game,
                 team_type= tournament_type, slots=tournament_slots,
-                rules=tournament_rules
+                rules=tournament_rules, discord_server_id=discord_server_id,
+                youtube_url=youtube_url
             )
         else:
             tournament_banner = None
@@ -171,7 +174,8 @@ def create_tournament(request):
                 date=tournament_date, time=tournament_time, 
                 game_type=tournament_game,
                 team_type= tournament_type, slots=tournament_slots,
-                rules=tournament_rules
+                rules=tournament_rules, discord_server_id=discord_server_id,
+                youtube_url=youtube_url
             ) 
             
         messages.success(request, f"Tournament {tournament_name} created successfully")
@@ -331,10 +335,6 @@ def change_team_decline_status(request, pk, pk2):
     content_data_dict = {
         'team_name': team.team_name,
         "tournament_name": tournament.tournament_name,
-        "tournament_banner": tournament.banner.url,
-        "start_time": tournament.start_at,
-        "end_time": tournament.end_at,
-        "team_type": tournament.team_type,
     }
 
     # decliaton email will be sent to the related user
@@ -546,6 +546,7 @@ def send_tourna_result(request, pk):
 
         content_data_dict ={
             'tournament_name': tournament.tournament_name,
+            'tournament_url': f'http://127.0.0.1:8000/tournament/{pk}/'
         }
 
         winner_email_body = f"Congratulations! You win the {tournament.tournament_name} tournament"
@@ -566,6 +567,7 @@ def send_tourna_result(request, pk):
         }
         content_data_dict ={
             'tournament_name': tournament.tournament_name,
+            'tournament_url': f'http://127.0.0.1:8000/tournament/{pk}/'
         }
         email_body = f"Congratulations! You win the {tournament.tournament_name} tournament"
         email_content = render_to_string("emails/top_three_tournament_winner_result.html", content_data_dict)

@@ -16,9 +16,7 @@ from django.utils.html import strip_tags
 
 # home page not much dynamic content
 def home(request):
-    context = {
-        'image': HomeImages.objects.all()[0]
-    }
+    context = {}
     return render(request, 'tournament/home.html', context=context)
 
 

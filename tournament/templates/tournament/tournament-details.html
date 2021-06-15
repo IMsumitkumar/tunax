@@ -141,7 +141,7 @@
                                 <b>Submit Results</b>
                             </a>
                         {% else %}
-
+                                    
 
                             {% if tournament.start_at|event_upcoming %}
                                 {% if tournament.slots|is_slots_left:confirmed_teams %}
@@ -150,7 +150,7 @@
                                             {% include "components/join-tourna-button.html" %}
                                         {% else %}
                                         <butto type="button" style="float: right; border-radius: 20px;" class="login-button btn btn-secondary" data-toggle="modal" data-target="#loginModal">
-                                            Login / signup
+                                            Login
                                         </button> 
                                         <!-- <a href="{% url 'register' %}" style="float: right; border-radius: 20px;" type="button" class="login-button btn btn-secondary mb-2">
                                             Create Account
@@ -254,7 +254,7 @@
 
                                     <div class="row">
                                         <div class="col d-flex justify-content-start">
-                                            <div class="widget-content widget-content-area">
+                                            <div class="widget-content">
                                                 <div style="font-size: 20px; color: azure;" id="editor-container">
                                                     {{tournament.rules|linebreaks}}
                                                 </div>
@@ -273,8 +273,8 @@
 
                                 </div>
                                 <div class="row tab-pane fade" id="justify-center-pills-prizes" role="tabpanel" aria-labelledby="justify-center-pills-prizes-tab">
-                                    <p class="dropcap  dc-outline-primary">
-                                        <div class="widget-content widget-content-area">
+                                    <!-- <p class="dropcap  dc-outline-primary"> -->
+                                        <div class="widget-content">
                                             <div class="row">
                                                 <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
                                                     <div class="card component-card_1"> 
@@ -325,42 +325,40 @@
                                             </div>
                                             
                                         </div>
-                                    </p>
+                                    <!-- </p> -->
                                 </div>
                                 <div class="tab-pane fade" id="justify-center-pills-participants" role="tabpanel" aria-labelledby="justify-center-pills-participants-tab">
-                                    <div class="container">
-                                        <div class="row">
-                                            {% for team in confirmed_teams %}
-                                                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
-                                                    <div class="card component-card_1">
-                                                        <div class="row">
-                                                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">    
-                                                                <div class="avatar avatar-lg">
-                                                                    <img alt="avatar" src="{{team.team_pic.url}}" class="rounded" width="40" height="40" />
+                                    <div class="row">
+                                        {% for team in confirmed_teams %}
+                                            <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 layout-spacing">
+                                                <div class="card component-card_1">
+                                                    <div class="row">
+                                                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">    
+                                                            <div class="avatar avatar-lg">
+                                                                <img alt="avatar" src="{{team.team_pic.url}}" class="rounded" width="40" height="40" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7 mt-2">
+                                                            <p class="body-title"><b>  {{ team.team_name }}</p></b>
+                                                        </div>
+                                                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mt-2 mx-2">
+                                                            <div class="btn-group">                 
+                                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>                                                                        <!-- </div> -->
+                                                                </a>
+                                                                <div class="dropdown-menu dropdown-menu-right">
+                                                                    {% for member in team.get_team_member_list %}
+                                                                    <a class="label-group-item dropdown-item position-relative"><b> {{member.team_member}}</b></a>
+                                                                    {% endfor %}
                                                                 </div>
                                                             </div>
-                                                            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7 mt-2">
-                                                                <p class="body-title"><b>  {{ team.team_name }}</p></b>
-                                                            </div>
-                                                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mt-2 mx-2">
-                                                                <div class="btn-group">
-                                                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>                                                                        <!-- </div> -->
-                                                                    </a>
-                                                                    <div class="dropdown-menu dropdown-menu-right">
-                                                                        {% for member in team.get_team_member_list %}
-                                                                        <a class="label-group-item dropdown-item position-relative"><b> {{member.team_member}}</b></a>
-                                                                        {% endfor %}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            
-                                                        </div>                                                    
-                                                    </div>
+                                                        </div>
+                                                        
+                                                    </div>                                                    
                                                 </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>   
+                                            </div>
+                                        {% endfor %}
+                                    </div>
                                 </div>
                                 <div class="tab-pane fade" id="justify-center-pills-winner" role="tabpanel" aria-labelledby="justify-center-pills-winner-tab">
                                     <div class="row">

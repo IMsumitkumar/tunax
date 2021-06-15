@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %} Page Not Found {% endblock %}
+{% load static %}
+{% block content %}
+
+<div class="layout-px-spacing">
+
+    <div class="row layout-top-spacing">
+        
+        <div class="col-xl-9 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+            <div class="widget widget-chart-one">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-secondary"><b>Back to Home</b></button>
+                </div>
+                <div class="d-flex justify-content-start">
+                    <img src="{% static 'assets/img/404_background.png' %}" class="img-fluid" alt="Responsive image" height="600" width="800">
+                </div>
+            </div>
+        </div>
+
+        {% block topteams %}
+            {% include 'components/top-teams.html' %}
+        {% endblock %}
+
+    </div>
+</div>
+
+{% endblock %}

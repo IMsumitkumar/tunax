@@ -72,13 +72,21 @@
                             </div>
 
                             <div class="filter-checkbox-container">
-                                {% for status in tournament_status %}
-                                    <div class="ck-button">
-                                        <label>
-                                            <input href="/" id="filter-status" type="checkbox" class="filter-checkbox" data-filter="status" value="{{status}}" /> <span>{{status}}</span>
-                                        </label>
-                                    </div>
-                                {% endfor %}
+                                <div class="row">
+                                    <!-- <div class="col"> -->
+
+                                    {% for status in tournament_status %}
+                                            <div class="d-flex justify-content-around mx-0">
+                                                <div class="ck-button">
+                                                    <label>
+                                                        <input href="/" id="filter-status" type="checkbox" class="filter-checkbox" data-filter="status" value="{{status}}" /> <span>{{status}}</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        
+                                    {% endfor %}
+                                    <!-- </div> -->
+                                </div>
                             </div>
 
                             <div class="searchable-items grid infinite-container" id="filter-tournament-status">

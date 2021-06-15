@@ -9,7 +9,11 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Join verified tournaments! Easily create and manage esports tournaments!">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#6819f8">
+    <meta name="keywords" content="tournament, game, pubg, custom tournament, points table, play game, pubg tournament">
     <title>
         {% block title %}
         {% endblock %}
@@ -58,15 +62,13 @@
             <ul class="navbar-item flex-row ml-auto">
 
                 {% if request.user.is_authenticated %}
-                    <!-- <li class="nav-item dropdown language-dropdown">
-                        <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="language-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="{% static 'assets/img/ca.png' %}" class="flag-width" alt="flag">
-                        </a>
-                    </li> -->
                     <li class="nav-item dropdown user-profile-dropdown  order-lg-0 order-1">
                         <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-check"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+                            <div class="avatar avatar-lg">
+                                <img alt="avatar" src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="rounded" width="40" height="40" />
+                            </div>
                         </a>
+                        
                         <div class="dropdown-menu position-absolute e-animated e-fadeInUp" aria-labelledby="userProfileDropdown">
                             <div class="user-profile-section">                            
                                 <div class="media mx-auto">
@@ -314,5 +316,10 @@
 
 
     {% block custom_js %}{% endblock %}
+    
+    <!-- Appzi: Capture Insightful Feedback -->
+    <script async src="https://w.appzi.io/w.js?token=v45G1"></script>
+    <!-- End Appzi -->
+
 </body>
 </html>

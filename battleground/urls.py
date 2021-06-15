@@ -16,5 +16,8 @@ urlpatterns = [
     path('profile/', include('userprofile.urls')),
     path('accounts/', include('allauth.urls')),
 ]
+
+handler404 = 'battleground.views.error_404_view'
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -18,7 +18,7 @@
                     <div class="row">
                         <div class="col">
                             {% if request.user.is_authenticated %}
-                                <a href="{% url 'create-tournament' %}"><button style="float: right;" class="login-button btn btn-secondary mb-2"><b>Create Tourament</b></button></a>
+                                <a href="{% url 'create-tournament' %}"><button style="float: right;" class="login-button btn btn-secondary mb-2"><b>Create</b></button></a>
                             {% else %}
                             <!-- <a href="{% url 'register' %}" style="float: right;" type="button" class="login-button btn btn-secondary mb-2">
                                 Create Account
@@ -30,7 +30,7 @@
                             {% endif %}
                         </div>
                         <div class="col">
-                            <a href="{% url 'view-tournaments' %}"><button class="signup-button btn btn-secondary mb-2 mr-2"> <b>Browse Touraments</b></button></a>
+                            <a href="{% url 'view-tournaments' %}"><button class="signup-button btn btn-secondary mb-2 mr-2"> <b>Browse</b></button></a>
                         </div>
                     </div>
                 </div>

@@ -14,13 +14,18 @@
                 <div style="display: none;" id="msg" class="alert alert-success"></div>
                 <div class="row">
                     <div class="col-xl-4 col-lg-4 col-md-5 col-sm-4 col-4 layout-spacing">
-                        <h5 style="color: azure;"><b>ADD RESULT</b></h5>
+                        <div class="d-flex justify-content-start">
+                            <h5 style="color: azure;"><b>ADD RESULT</b></h5>
+                        </div>
                     </div>
+
                     <div class="col-xl-8 col-lg-8 col-md-7 col-sm-8 col-8 layout-spacing">
                         {% if request.user == tournament.admin %}
-                        <!-- <a id="sendresult" href="{% url 'sendTournamentResult' tournament.id %}"><input style="font-weight: bold;" type="button" class="invite-button btn btn-secondary " value="Notify"></a> -->
-                        <input style="font-weight: bold;" type="button" class="invite-button btn btn-secondary float-right mx-2" value="Notify" data-toggle="modal" data-target="#NotifyTeamModal">
-                        <input id="inviteorganiser" style="font-weight: bold;" type="button" class="invite-button btn btn-secondary float-right" value="Invite" data-toggle="modal" data-target="#InviteOrganizerModal">
+                        <div class="d-flex justify-content-end">
+                            <input type="button" class="invite-button btn btn-secondary float-right mx-2" value="Notify" data-toggle="modal" data-target="#NotifyTeamModal">
+                        <input id="inviteorganiser" type="button" class="invite-button btn btn-secondary float-right" value="Invite" data-toggle="modal" data-target="#InviteOrganizerModal">
+                        </div>
+                        
                         {% endif %}
                     </div>
                 </div>

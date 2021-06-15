@@ -25,7 +25,7 @@ def registerPage(request):
 
 
     context ={'form': form}
-    return render(request, 'accounts/register.html', context=context)
+    return render(request, 'accounts/register_user.html', context=context)
 
 @unauthenticated_user
 def loginPage(request):

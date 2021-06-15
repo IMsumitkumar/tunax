@@ -65,14 +65,23 @@
                     <li class="nav-item dropdown user-profile-dropdown  order-lg-0 order-1">
                         <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="avatar avatar-lg">
-                                <img alt="avatar" src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="rounded" width="40" height="40" />
+                                {% if user.socialaccount_set.all %}
+                                    <img alt="avatar" src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="rounded" width="40" height="40" />
+                                {% else %}
+                                    <img alt="avatar" src="{% static 'assets/img/default_avatar.webp' %}" class="rounded" width="40" height="40" />
+                                {% endif %}
+
                             </div>
                         </a>
                         
                         <div class="dropdown-menu position-absolute e-animated e-fadeInUp" aria-labelledby="userProfileDropdown">
                             <div class="user-profile-section">                            
                                 <div class="media mx-auto">
-                                    <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="img-fluid mr-2" alt="avatar">
+                                    {% if user.socialaccount_set.all %}
+                                        <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="img-fluid mr-2" alt="avatar">
+                                    {% else %}
+                                        <img src="{% static 'assets/img/default_avatar.webp' %}" class="img-fluid mr-2" alt="avatar">
+                                    {% endif %}
                                     <div class="media-body">
                                         <h5>{{request.user}}</h5>
                                     </div>
@@ -94,7 +103,7 @@
                     <li>
                         <div id="content-mobile">
                             <a href="{% url 'register' %}" type="button" class="signup-button btn btn-secondary mb-2 mr-2 mt-2">
-                                Register
+                                Signup
                             </a>
                             <butto type="button" class="login-button btn btn-dark mb-2 mr-2 mt-2" data-toggle="modal" data-target="#loginModal">
                                 Login
@@ -123,11 +132,12 @@
                 <ul class="navbar-nav theme-brand flex-row  text-center">
                     <li class="nav-item theme-logo">
                         <a href="{% url 'home' %}">
-                            <img src="{% static 'assets/img/logo_heart_two.png' %}" class="navbar-logo" alt="logo">
+                            <img src="{% static 'assets/img/logo.png' %}" class="navbar-logo" alt="logo">
                         </a>
                     </li>
                     <li class="nav-item theme-text">
-                        <a href="{% url 'home' %}" class="nav-link"> KHELOBC </a>
+                        <a href="{% url 'home' %}" class="nav-link"> <span style="font-size: 43px;
+                            color: purple; font-weight: 900;">R</span><span style="font-family: sans-serif; font-weight: 800;">EDO</span> </a>
                     </li>
                 </ul>
 
@@ -179,9 +189,9 @@
                                 <span>Apps</span>
                             {% else %}
                                 <span>
-                                    <butto type="button" class="login-button btn btn-secondary" data-toggle="modal" data-target="#loginModal">
-                                        Login / Signup
-                                    </button>
+                                    <a href="{% url 'register' %}"><button type="button" class="login-button btn btn-secondary">
+                                        Create Account
+                                    </button></a>
                                 </span>
                             {% endif %}
                         </div>

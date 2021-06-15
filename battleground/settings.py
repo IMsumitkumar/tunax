@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'battleground.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'tunax',
+        'NAME': 'gamespace',
         'USER': 'sumit',
         'PASSWORD': 'kumarsumitK102938',
 	    'HOST':"database-1.clxidkxffzan.ap-south-1.rds.amazonaws.com",

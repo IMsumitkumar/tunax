@@ -1,38 +1,221 @@
+{% block custom_style %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Play:wght@700&display=swap');
+
+
+    .table-container td {
+        color: black;
+        text-align: center;
+        padding: 8px;
+        background-color: white;
+    }
+
+    .table-container th {
+        text-align: center;
+        padding: 8px;
+    }
+
+    .heading1 {
+        color: white;
+        text-align: center;
+        font-size: 35px;
+        font-weight: 600;
+        margin-bottom: 7px;
+        word-spacing: 4mm;
+
+    }
+
+    h2 {
+        padding-top: 0px;
+        color: white;
+        text-align: center;
+        margin: 10px;
+        font-size: 22px;
+    }
+
+    .heading {
+        color: orange;
+        text-align: center;
+        font-size: 40px;
+        font-weight: 600;
+    }
+
+    .table-div {
+        display: flex;
+        justify-content: center;
+    }
+
+    .tr1 th {
+        background: none;
+        border: none;
+        color: white;
+    }
+
+    .th1 {
+        width: 25px;
+    }
+
+    .th2 {
+        width: 220px;
+    }
+
+    .th3 {
+        width: 90px;
+    }
+
+    .th4 {
+        width: 80px;
+    }
+
+    .th5 {
+        width: 70px;
+    }
+
+    .para {
+        color: white;
+        text-align: center;
+        font-weight: 100;
+        word-spacing: 7mm;
+    }
+
+    .table-content-ss {
+        background-image: repeating-linear-gradient(45deg, hsla(253,0%,98%,0.03) 0px, hsla(253,0%,98%,0.03) 1px,transparent 1px, transparent 12px),repeating-linear-gradient(112.5deg, hsla(253,0%,98%,0.03) 0px, hsla(253,0%,98%,0.03) 1px,transparent 1px, transparent 12px),repeating-linear-gradient(22.5deg, hsla(253,0%,98%,0.03) 0px, hsla(253,0%,98%,0.03) 1px,transparent 1px, transparent 12px),repeating-linear-gradient(67.5deg, hsla(253,0%,98%,0.03) 0px, hsla(253,0%,98%,0.03) 1px,transparent 1px, transparent 12px),repeating-linear-gradient(45deg, hsla(253,0%,98%,0.03) 0px, hsla(253,0%,98%,0.03) 1px,transparent 1px, transparent 12px),repeating-linear-gradient(157.5deg, hsla(253,0%,98%,0.03) 0px, hsla(253,0%,98%,0.03) 1px,transparent 1px, transparent 12px),repeating-linear-gradient(112.5deg, hsla(253,0%,98%,0.03) 0px, hsla(253,0%,98%,0.03) 1px,transparent 1px, transparent 12px),repeating-linear-gradient(90deg, hsla(253,0%,98%,0.03) 0px, hsla(253,0%,98%,0.03) 1px,transparent 1px, transparent 12px),repeating-linear-gradient(90deg, hsla(253,0%,98%,0.03) 0px, hsla(253,0%,98%,0.03) 1px,transparent 1px, transparent 12px),repeating-linear-gradient(135deg, hsla(253,0%,98%,0.03) 0px, hsla(253,0%,98%,0.03) 1px,transparent 1px, transparent 12px),repeating-linear-gradient(67.5deg, hsla(253,0%,98%,0.03) 0px, hsla(253,0%,98%,0.03) 1px,transparent 1px, transparent 12px),repeating-linear-gradient(135deg, hsla(253,0%,98%,0.03) 0px, hsla(253,0%,98%,0.03) 1px,transparent 1px, transparent 12px),repeating-linear-gradient(90deg, hsla(253,0%,98%,0.03) 0px, hsla(253,0%,98%,0.03) 1px,transparent 1px, transparent 12px),linear-gradient(90deg, rgb(13, 8, 66),rgb(230, 168, 209));
+        background-repeat: no-repeat;
+        background-size: cover;
+        font-family: 'Play', sans-serif;
+        align-items: center;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        border-radius: 10px;
+        box-shadow: 1px 12px 12px black;
+    }
+</style>
+{% endblock %}
+
 <div class="d-flex justify-content-center">
-    <button style="float: right; border-radius: 20px;" type="button"  class="login-button btn btn-secondary mb-2" data-toggle="modal" data-target="#pointsTableModal">
+    <button style="float: right; border-radius: 20px;" type="button" class="login-button btn btn-secondary mb-2"
+        data-toggle="modal" data-target="#pointsTableModal">
         <b>points Table </b>
     </button>
 </div>
 
-<div style="overflow-y:auto;" class="modal fade" id="pointsTableModal" tabindex="-1" role="dialog" aria-labelledby="pointsTableModalLabel" aria-hidden="true">
+<div style="overflow-y:auto;" class="modal fade" id="pointsTableModal" tabindex="-1" role="dialog"
+    aria-labelledby="pointsTableModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="model-text"> </h3>
             </div>
             <div class="modal-body">
-                <div class="table-responsive">
-                    <div id="point-table">
-                        <table style="border-radius: 15px; background-image: linear-gradient(135deg, rgb(59, 72, 175) 0%, rgb(59, 72, 175) 31%,rgb(55, 66, 150) 31%, rgb(55, 66, 150) 46%,rgb(51, 60, 126) 46%, rgb(51, 60, 126) 56%,rgb(48, 54, 101) 56%, rgb(48, 54, 101) 83%,rgb(44, 48, 77) 83%, rgb(44, 48, 77) 93%,rgb(40, 42, 52) 93%, rgb(40, 42, 52) 100%);" class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">Team Name</th>
-                                    <th class="text-center">Kill Points</th>
-                                    <th class="text-center">place points</th>
-                                    <th class="text-center">Total pts</th>
+                <div id="point-tablekdlflsfll">
+                    <div class="table-content-ss" >
+                        <h1 class="heading1">TXT Exports</h1>
+                        <h2>JUSTITE LASASO</h2>
+                        <h1 class="heading">LEADER BOARD</h1>
+                        <div class="table-div">
+                            
+                            <table style="border-collapse: separate;" class="table-container">
+                                <tr class="tr1">
+                                    <th class="th1">#</th>
+                                    <th class="th2">Team</th>
+                                    <th class="th3">Place PTS</th>
+                                    <th class="th4">Kill PTS</th>
+                                    <th class="th5">Total</th>
                                 </tr>
-                            </thead>
-                            <tbody style="font-family: monospace; font-weight: bold;" id="resulttablebody">
-                                {% for t in teams %}
                                 <tr>
-                                    <td class="text-center">{{t.teamname}}</td>
-                                    <td class="text-center">{{t.killspts}}</td>
-                                    <td class="text-center">{{t.placepts}}</td>
-                                    <td class="text-center">{{t.total_points}}</td>
+                                    <td>1</td>
+                                    <td>7X Kerala</td>
+                                    <td>22</td>
+                                    <td>57</td>
+                                    <td>79</td>
                                 </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                <tr>
+                                    <td>1</td>
+                                    <td>7X Kerala</td>
+                                    <td>22</td>
+                                    <td>57</td>
+                                    <td>79</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>7X Kerala</td>
+                                    <td>22</td>
+                                    <td>57</td>
+                                    <td>79</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>7X Kerala</td>
+                                    <td>22</td>
+                                    <td>57</td>
+                                    <td>79</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>7X Kerala</td>
+                                    <td>22</td>
+                                    <td>57</td>
+                                    <td>79</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>7X Kerala</td>
+                                    <td>22</td>
+                                    <td>57</td>
+                                    <td>79</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>7X Kerala</td>
+                                    <td>22</td>
+                                    <td>57</td>
+                                    <td>79</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>7X Kerala</td>
+                                    <td>22</td>
+                                    <td>57</td>
+                                    <td>79</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>7X Kerala</td>
+                                    <td>22</td>
+                                    <td>57</td>
+                                    <td>79</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>7X Kerala</td>
+                                    <td>22</td>
+                                    <td>57</td>
+                                    <td>79</td>
+                                </tr>
+
+                            </table>
+
+                        </div>
+                        <!-- <table style="border-radius: 15px; background-image: linear-gradient(135deg, rgb(59, 72, 175) 0%, rgb(59, 72, 175) 31%,rgb(55, 66, 150) 31%, rgb(55, 66, 150) 46%,rgb(51, 60, 126) 46%, rgb(51, 60, 126) 56%,rgb(48, 54, 101) 56%, rgb(48, 54, 101) 83%,rgb(44, 48, 77) 83%, rgb(44, 48, 77) 93%,rgb(40, 42, 52) 93%, rgb(40, 42, 52) 100%);" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Team Name</th>
+                                        <th class="text-center">Kill Points</th>
+                                        <th class="text-center">place points</th>
+                                        <th class="text-center">Total pts</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-family: monospace; font-weight: bold;" id="resulttablebody">
+                                    {% for t in teams %}
+                                    <tr>
+                                        <td class="text-center">{{t.teamname}}</td>
+                                        <td class="text-center">{{t.killspts}}</td>
+                                        <td class="text-center">{{t.placepts}}</td>
+                                        <td class="text-center">{{t.total_points}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table> -->
                     </div>
                 </div>
                 <div class="d-flex justify-content-center mt-3">

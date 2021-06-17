@@ -8,7 +8,7 @@
 {% load custom_tags %}
 
 {% block ogmeta %}
-<meta property="og:url" content="{% url 'tournament-detail' %}" />
+<meta property="og:url" content="{% url 'tournament-detail' tournament.id %}" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="Join {{Tourament.tournament_name}} with your squad. Register Now!" />
 <meta property="og:description" content="Join verified tournaments or Easily create and manage esports tournaments!" />

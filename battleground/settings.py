@@ -127,7 +127,7 @@ MESSAGE_TAGS = {
 }
 
 
-BASE_URL = "http://65.2.121.82/"
+BASE_URL = "http://rewardo.ga/"
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_ON_GET = True
 

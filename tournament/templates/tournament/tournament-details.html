@@ -460,15 +460,17 @@
 
     <script>
 
-        $("#dwnld-ptable").click(function(){
-            domtoimage.toJpeg(document.getElementById('point-table-imge'), { quality: 0.95 })
-            .then(function (dataUrl) {
-                var link = document.createElement('a');
-                link.download = 'match-stats.jpeg';
-                link.href = dataUrl;
-                link.click();
+        {% if request.user.is_authenticated %}
+            $("#dwnld-ptable").click(function(){
+                domtoimage.toJpeg(document.getElementById('point-table-imge'), { quality: 0.95 })
+                .then(function (dataUrl) {
+                    var link = document.createElement('a');
+                    link.download = 'match-stats.jpeg';
+                    link.href = dataUrl;
+                    link.click();
+                });
             });
-        });
+        {% endif %}
 
     </script>
 

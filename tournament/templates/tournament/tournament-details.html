@@ -455,31 +455,27 @@
 </div>
 
     {% block custom_js %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js" integrity="sha512-s/XK4vYVXTGeUSv4bRPOuxSDmDlTedEpMEcAQk0t/FMd9V6ft8iXdwSBxV0eD60c6w/tjotSlKu9J2AAW1ckTA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="{% static 'plugins/apex/apexcharts.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.js"></script>
 
     <script>
-        {% if request.user == tournament.admin %}
-            $("#dwnld-ptable").click(function(){
-                html2canvas($("#point-tablekdlflsfll"),
-                {       
-                    letterRendering: 1,
-                    allowTaint: true,
-                    useCORS: true,
-                    scale: 2,
-                    onrendered:function(canvas){
-                        var a = document.createElement('a');
-                        a.href = canvas.toDataURL("image/png");
-                        a.download = "match-stats.png"
-                        a.click(); 
-                    }
-                });
+
+        $("#dwnld-ptable").click(function(){
+            domtoimage.toJpeg(document.getElementById('point-table-imge'), { quality: 0.95 })
+            .then(function (dataUrl) {
+                var link = document.createElement('a');
+                link.download = 'match-stats.jpeg';
+                link.href = dataUrl;
+                link.click();
             });
-        {% endif %}
-        
+        });
+
     </script>
+
+
+
     
-        <script>
+    <script>
         Apex.grid = {
             borderColor: '#191e3a'
         }

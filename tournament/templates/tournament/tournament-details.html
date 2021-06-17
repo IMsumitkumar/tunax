@@ -1,11 +1,20 @@
 {% extends "base.html" %}
-{% block title %} {{tournament.tournament_name}} {% endblock %}
+{% block title %} {{tournament.tournament_name}} | RewardO {% endblock %}
 {% load static %}
 {% block content %}
 {% load humanize %}
 {% load social_share %}
 {% load event_status %}
 {% load custom_tags %}
+
+{% block ogmeta %}
+<meta property="og:url" content="{% url 'tournament-detail' %}" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Join {{Tourament.tournament_name}} with your squad. Register Now!" />
+<meta property="og:description" content="Join verified tournaments or Easily create and manage esports tournaments!" />
+<meta property="og:image" content="{{ tournament.banner.url }}" />
+
+{% endblock %}
 
 {% block custom_style %}
     <style>
@@ -452,7 +461,6 @@
     <script>
         {% if request.user == tournament.admin %}
             $("#dwnld-ptable").click(function(){
-                console.log("O");
                 html2canvas($("#point-table"),
                 {   
                     scale: 2,

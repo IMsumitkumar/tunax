@@ -12,26 +12,28 @@
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <table id="point-table" style="border-radius: 15px;" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th class="text-center">Team Name</th>
-                                <th class="text-center">Kill Points</th>
-                                <th class="text-center">place points</th>
-                                <th class="text-center">Total pts</th>
-                            </tr>
-                        </thead>
-                        <tbody id="resulttablebody">
-                            {% for t in teams %}
-                            <tr>
-                                <td class="text-center">{{t.teamname}}</td>
-                                <td class="text-center">{{t.killspts}}</td>
-                                <td class="text-center">{{t.placepts}}</td>
-                                <td class="text-center">{{t.total_points}}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <div id="point-table">
+                        <table style="border-radius: 15px; background-image: linear-gradient(135deg, rgb(59, 72, 175) 0%, rgb(59, 72, 175) 31%,rgb(55, 66, 150) 31%, rgb(55, 66, 150) 46%,rgb(51, 60, 126) 46%, rgb(51, 60, 126) 56%,rgb(48, 54, 101) 56%, rgb(48, 54, 101) 83%,rgb(44, 48, 77) 83%, rgb(44, 48, 77) 93%,rgb(40, 42, 52) 93%, rgb(40, 42, 52) 100%);" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Team Name</th>
+                                    <th class="text-center">Kill Points</th>
+                                    <th class="text-center">place points</th>
+                                    <th class="text-center">Total pts</th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-family: monospace; font-weight: bold;" id="resulttablebody">
+                                {% for t in teams %}
+                                <tr>
+                                    <td class="text-center">{{t.teamname}}</td>
+                                    <td class="text-center">{{t.killspts}}</td>
+                                    <td class="text-center">{{t.placepts}}</td>
+                                    <td class="text-center">{{t.total_points}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="d-flex justify-content-center mt-3">
                     <button id="dwnld-ptable" class="invite-button btn btn-secondary">Download</button>

@@ -1,10 +1,19 @@
 {% extends "base.html" %}
-{% block title %} battleground | India {% endblock %}
+{% block title %} Find Tournaments | India {% endblock %}
 {% load static %}
 {% block content %}
 {% load event_status %}
 {% load humanize %}
 
+
+{% block ogmeta %}
+<meta property="og:url" content="{% url 'view-tournaments' %}" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Easily create and manage esports tournaments! Register Now!" />
+<meta property="og:description" content="Find a perfect turnament for you for free and Join verified tournaments or Easily create and manage esports tournaments!" />
+<meta property="og:image" content="{% static 'assets/img/home2.webp' %}" />
+
+{% endblock %}
 
 <div class="layout-px-spacing">
 

@@ -1,10 +1,18 @@
 {% extends "base.html" %}
-{% block title %} battleground | India {% endblock %}
+{% block title %} RewardO | India {% endblock %}
 {% load static %}
 {% block content %}
-{% block custom_style %} 
+
+
+{% block ogmeta %}
+<meta property="og:url" content="{% url 'home' %}" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="Easily create and manage esports tournaments!" />
+<meta property="og:description" content="Join verified tournaments or Easily create and manage esports tournaments!" />
+<meta property="og:image" content="{% static 'assets/img/home2.webp' %}" />
 
 {% endblock %}
+
 
 <div class="layout-px-spacing">
 

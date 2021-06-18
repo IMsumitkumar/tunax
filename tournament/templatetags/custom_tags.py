@@ -10,7 +10,9 @@ def have_tournament_owner_permission(user, pk):
     tournament = TournaRegistration.objects.get(id=pk)
 
     try:
-        status = (user == tournament.admin or TournamentOrganizer.objects.exclude(pk=pk).filter(helper=user).exists())
+        status = (user == tournament.admin or TournamentOrganizer.objects.filter(tournament=tournament).filter(helper=user).exists())
+        print(status)
+        print(TournamentOrganizer.objects.filter(tournament=tournament))
         return status
     except:
         return False

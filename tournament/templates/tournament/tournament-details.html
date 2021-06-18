@@ -144,7 +144,6 @@
                     </div>
                 
                     <div class="col mt-3 mx-1">
-
                         {% if request.user|have_tournament_owner_permission:tournament.id %}
                             <a href="{% url 'manage-tournament-result' tournament.id %}" style="float: right; border-radius: 20px;" type="button"  class="btn btn-light mb-2">
                                 <b>Submit Results</b>

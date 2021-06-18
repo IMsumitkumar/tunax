@@ -208,6 +208,13 @@ def register_by_existing_team(request, pk):
         else:
             EnrollmentTeam.objects.create(tournament=EnrollmentInTournament.objects.create(tournament=tournament),
                                         enrolled_teams=new_team)
+
+        # this is for, to create a record of all touenaments in which a specific user registered
+        # in futture, i want to fetch all the tournament in which current logged in use registered
+        # in that case it will help
+        # any alternative, most welcomed by sumit
+        EnrolledTournaments.objects.create(user=request.user, tournament=tournament)
+        
         # EnrollmentTeam(tournament_id=reg_tournament.id, enrolled_teams_id=new_team.id)
         messages.success(request, f"Registered successfully")
         return redirect(f'/tournament/{pk}/')

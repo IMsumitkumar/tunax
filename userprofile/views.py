@@ -56,7 +56,7 @@ def create_certificate(request, tournament_id):
                 "team_name": team.team_name
             }
 
-            image_name = 'certificate.jpg'
+            image_name = 'certificate.png'
             # create certificate for specific team
             image = make_certificate(image_name, data_dict)
 

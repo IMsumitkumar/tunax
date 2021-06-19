@@ -26,7 +26,7 @@
                     <div class="row">
                         <div class="col-xl-6 col-lg-12 col-md-6 col-sm-6 col-6">
                             {% if request.user.is_authenticated %}
-                                <a href="{% url 'create-tournament' %}"><button style="float: right;" class="login-button btn btn-secondary mb-2"><b>Create Tourna</b></button></a>
+                                <a href="{% url 'create-tournament' %}"><button style="float: right;" class="login-button btn btn-secondary mb-2"><b>Create Tournament</b></button></a>
                             {% else %}
                             <a href="{% url 'register' %}"><button style="float: right;" type="button" class="login-button btn btn-secondary">
                                 Create Account
@@ -34,7 +34,7 @@
                             {% endif %}
                         </div>
                         <div class="col-xl-6 col-lg-12 col-md-6 col-sm-6 col-6">
-                            <a href="{% url 'view-tournaments' %}"><button class="signup-button btn btn-secondary mb-2 mr-2"> <b>Browse Tourna's</b></button></a>
+                            <a href="{% url 'view-tournaments' %}"><button class="signup-button btn btn-secondary mr-2"> <b>Browse tournament</b></button></a>
                         </div>
                     </div>
                 </div>

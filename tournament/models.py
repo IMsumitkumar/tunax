@@ -212,7 +212,7 @@ class Token(models.Model):
 
     @property
     def is_expired(self):
-        if timezone.now() > (self.created_at + timedelta(minutes=15)):
+        if timezone.now() > (self.created_at + timedelta(minutes=10)):
             return True
         return False
 

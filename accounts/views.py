@@ -18,10 +18,23 @@ def registerPage(request):
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            user = form.cleaned_data.get('username')
+            username = form.cleaned_data.get('username')
             form.save()
-            messages.success(request, "Account was created for "+user)
-            return redirect('home')
+
+            try:
+                password = form.cleaned_data.get('password1')
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    messages.info(request, f"Successfully signed in as {user.username}")
+                    return redirect('home')
+                else:
+                    messages.info(request, "There is some problem with your account.Please Login manually.")
+                    return redirect('home')
+
+            except:
+                messages.success(request, "Account was created for "+username)
+                return redirect('home')
 
 
     context ={'form': form}

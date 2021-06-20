@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% block title %} battleground | India {% endblock %}
+{% load static %}
+{% block content %}
+{% load event_status %}
+{% load humanize %}
+{% load custom_tags %}
+
+
+<div class="layout-px-spacing">
+    <div class="row layout-top-spacing">
+
+        <div class="col-xl-4 col-lg-6 col-md-5 col-sm-12 layout-top-spacing">
+            <div class="user-profile layout-spacing">
+                <div class="widget-content widget-content-area">
+                    <div class="d-flex justify-content-between">
+                        <h4>Profile</h4>
+                        
+                    </div>
+                    <div style="margin-top: 40px;" class="text-center user-info">
+                        {% if user.socialaccount_set.all %}
+                            <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="img-fluid rounded" alt="avatar">
+                        {% else %}
+                            <img src="{% static 'assets/img/default_avatar.webp' %}" class="img-fluid rounded" alt="avatar">
+                        {% endif %}
+                        <!-- <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" class="rounded" alt="avatar"> -->
+                        <p>{{request.user}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-8 col-lg-6 col-md-7 col-sm-12 layout-top-spacing">
+            <div class="widget widget-chart-one">
+                <div class="row mt-3">
+                    <div class="col-lg-12 col-12 layout-spacing">
+
+                        <div style="padding: 0px !important;" class="widget-content widget-content-area pill-justify-centered">    
+                            <ul class="nav nav-pills mb-3 mt-3 justify-content-center" id="justify-center-pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link" id="justify-center-pills-usertourna-tab" data-toggle="pill" href="#justify-center-pills-usertourna" role="tab" aria-controls="justify-center-pills-usertourna" aria-selected="true"><b>Organized Tourament</b></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="justify-center-pills-regtourna-tab" data-toggle="pill" href="#justify-center-pills-regtourna" role="tab" aria-controls="justify-center-pills-regtourna" aria-selected="false"><b>My Tournament</b></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-content" id="justify-center-pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="justify-center-pills-usertourna" role="tabpanel" aria-labelledby="justify-center-pills-usertourna-tab">
+                                <div class="row layout-top-spacing">
+                                    <div id="custom_carousel" class="col-lg-12 layout-spacing ">
+                                        <div class="widget-content searchable-container list">                            
+                                            <div class="searchable-items grid" id="filter-tournament-status">
+                                                <div style="display:none;" class="filter-loader">
+                                                    <div class="spinner-border spinner-border-reverse align-self-center text-secondary"></div>
+                                                </div>
+                                                {% for tournament in user_tournaments %}
+                                                    <div class="items infinite-item">
+                                                            <div class="widget-card box box-shadow">
+                                                                <a href="{% url 'tournament-detail' tournament.id %}"><img class="card-img-top" src="{{tournament.banner.url}}" alt="Card image cap"></a>
+                                                                <div class="user-meta-info">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <a href="{% url 'tournament-detail' tournament.id %}"><p class="tournament-name" data-name="Tourname Name"> <b>{{tournament.tournament_name}}</b></p></a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mt-1">
+                                                                    <div class="col">
+                                                                        <span class="badge badge-primary">{{tournament.game_type}}</span>
+                                                                        <span class="badge badge-primary">{{tournament.team_type}}</span>
+                                                                        <span class="badge badge-primary">{{tournament.slots}}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mt-3">
+                                                                    <div class="col">
+                                                                        <div class="user-phone">
+                                                                            <p style="color: azure;" class="info-title"><b>{{tournament.start_at|naturalday}}</b></p>
+                                                                        </div>
+                                                                    </div>
+                                                
+                                                                    {% if tournament.start_at|event_upcoming %}
+                                                                            <div class="col">
+                                                                                <p style="float: right;" class="user-work"><span class="badge badge-pill badge-success"> UPCOMING </span></p>
+                                                                            </div>
+                                                                        </div>  
+                                                                        <div class="progress br-30 progress-sm">
+                                                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                        </div>
+                                                                    {% elif tournament.end_at|event_ended %}
+                                                                            <div class="col">
+                                                                                <p style="float: right;" class="user-work"><span class="badge badge-pill badge-dark"> END </span></p>
+                                                                            </div>
+                                                                        </div>  
+                                                                        <div class="progress br-30 progress-sm">
+                                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                        </div>
+                                                                    {% elif tournament.start_at|event_live:tournament.end_at %}
+                                                                            <div class="col">
+                                                                                <p style="float: right;" class="user-work"><span class="badge badge-pill badge-danger"> LIVE </span></p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="progress br-30 progress-sm">
+                                                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                        </div>
+                                                                    {% endif %}
+                                                            </div>                                    
+                                                    </div>
+                                                {% endfor %}    
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="justify-center-pills-regtourna" role="tabpanel" aria-labelledby="justify-center-pills-regtourna-tab">
+                                <div class="row layout-top-spacing">
+                                    <div id="custom_carousel" class="col-lg-12 layout-spacing ">
+                                        <div class="widget-content searchable-container list">                            
+                                            <div class="searchable-items grid infinite-container" id="filter-tournament-status">
+                                                <div style="display:none;" class="filter-loader">
+                                                    <div class="spinner-border spinner-border-reverse align-self-center text-secondary"></div>
+                                                </div>
+                                                {% for tournament in enrolled_tourna %}
+                                                    <div class="items infinite-item">
+                                                        <!-- <div class="card item-content"> -->
+                                                            <div class="widget-card box box-shadow">
+                                                                
+                                                                <a href="{% url 'tournament-detail' tournament.tournament.id %}"><img class="card-img-top" src="{{tournament.tournament.banner.url}}" alt="Card image cap"></a>
+                                                                <div class="user-meta-info">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <a href="{% url 'tournament-detail' tournament.tournament.id %}"><p class="tournament-name" data-name="Tourname Name"> <b>{{tournament.tournament.tournament_name}}</b></p></a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mt-1">
+                                                                    <div class="col">
+                                                                        <span class="badge badge-primary">{{tournament.tournament.game_type}}</span>
+                                                                        <span class="badge badge-primary">{{tournament.tournament.team_type}}</span>
+                                                                        <span class="badge badge-primary">{{tournament.tournament.slots}}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row mt-3">
+                                                                    <div class="col">
+                                                                        <div class="user-phone">
+                                                                            <p style="color: azure;" class="info-title"><b>{{tournament.tournament.start_at|naturalday}}</b></p>
+                                                                        </div>
+                                                                    </div>
+                                                
+                                                                    {% if tournament.tournament.start_at|event_upcoming %}
+                                                                            <div class="col">
+                                                                                <p style="float: right;" class="user-work"><span class="badge badge-pill badge-success"> UPCOMING </span></p>
+                                                                            </div>
+                                                                        </div>  
+                                                                        <div class="progress br-30 progress-sm">
+                                                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                        </div>
+                                                                    {% elif tournament.tournament.end_at|event_ended %}
+                                                                            <div class="col">
+                                                                                <p style="float: right;" class="user-work"><span class="badge badge-pill badge-dark"> END </span></p>
+                                                                            </div>
+                                                                        </div>  
+                                                                        <div class="progress br-30 progress-sm">
+                                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                        </div>  
+                                                                    {% elif tournament.tournament.start_at|event_live:tournament.tournament.end_at %}
+                                                                            <div class="col">
+                                                                                <p style="float: right;" class="user-work"><span class="badge badge-pill badge-danger"> LIVE </span></p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="progress br-30 progress-sm">
+                                                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                        </div>
+                                                                    {% endif %}
+                                                                    <div>
+                                                                    {% if request.user|is_winner:tournament.tournament.id %}
+                                                                    <div class="d-flex justify-content-center">
+                                                                        <a href="{% url 'create-certificate' tournament.tournament.id %}" type="button" id="download-certificate" class="certificate-download-button btn btn-secondary">Download certificate</a>
+                                                                    </div>
+                                                                    {% endif %}
+                                                                </div> 
+                                                            </div>
+                                                        <!-- </div> -->
+                                                    </div>
+                                                {% endfor %}    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

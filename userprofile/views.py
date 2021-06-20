@@ -30,6 +30,29 @@ def user_profile(request):
     }
     return render(request, 'userprofile/profile.html', context=context)
 
+
+def my_tournaments(request):
+    today = timezone.now()
+    tournament_status = ['UPCOMING', 'LIVE', 'ENDED']
+
+    # logged in user tournaments
+    user_tournament = TournaRegistration.objects.filter(admin=request.user)
+
+    enrolled_tourna = EnrolledTournaments.objects.filter(user=request.user)
+
+    # all tournaments in which logged user has registered
+    # paginator = Paginator(all_tournament, 15)
+    # page_number = request.GET.get('page')
+    # tournaments = paginator.get_page(page_number)
+
+    context = {
+        'tournament_status': tournament_status,
+        'today': today,
+        'user_tournaments': user_tournament,
+        'enrolled_tourna': enrolled_tourna,
+    }
+    return render(request, 'userprofile/mytournaments.html', context=context)
+
 def create_certificate(request, tournament_id):
     tournament = TournaRegistration.objects.get(id=tournament_id)
 

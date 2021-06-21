@@ -153,7 +153,7 @@ html {
     border-radius: 6px;
     border-color: #855618;
     background: linear-gradient(90deg, #ffa217, #6819f8);
-    font-size: large;
+    font-size: inherit;
     font-weight: bold;
 }
 
@@ -173,7 +173,7 @@ html {
     color: white;
     background-image: linear-gradient(90deg, #ffa217, #6819f8);
     border-radius: 10px;
-    font-size: large;
+    font-size: inherit;
     font-weight: bold;
     text-transform: uppercase;
     font-family: monospace;
@@ -226,7 +226,7 @@ html {
     /* border-right-color: #5737cf; */
     border-color: #855618;
     background: linear-gradient(90deg, #ffa217, #6819f8);
-    font-size: large;
+    font-size: inherit;
     font-weight: bold;
     font-family: monospace;
 }
@@ -236,7 +236,7 @@ html {
     /* border-left-color: #5737cf; */
     border-color: #6059b1;
     background: linear-gradient(90deg, #ffa217, #6819f8);
-    font-size: large;
+    font-size: inherit;
     font-weight: bold;
     font-family: monospace;
 }

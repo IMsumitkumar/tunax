@@ -64,15 +64,17 @@
 
             <ul class="navbar-item flex-row ml-auto">
 
-                <li class="nav-item d-block d-sm-none">
-                    <!-- style is for centering image in nav -->
-                    <img style="position: absolute; left: 43%; margin-left: -50px !important;" class="img-fluid" src="{% static 'assets/img/logoname.png' %}" width="150" height="50" alt="logo-name-image">
-                </li>
-                <li class="d-none d-lg-block d-xl-block">
-                    <div class="d-flex-justify-content-center">
-                        <img class="img-fluid" src="{% static 'assets/img/logoname.png' %}" width="150" height="50" alt="logo-name-image">
-                    </div>
-                </li>
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item d-block d-sm-none">
+                        <!-- style is for centering image in nav -->
+                        <img style="position: absolute; left: 43%; margin-left: -50px !important;" class="img-fluid" src="{% static 'assets/img/logoname.png' %}" width="150" height="50" alt="logo-name-image">
+                    </li>
+                    <li class="d-none d-lg-block d-xl-block">
+                        <div class="d-flex-justify-content-center">
+                            <img class="img-fluid" src="{% static 'assets/img/logoname.png' %}" width="150" height="50" alt="logo-name-image">
+                        </div>
+                    </li>
+                {% endif %}
 
                 {% if request.user.is_authenticated %}
                     <li class="nav-item dropdown user-profile-dropdown  order-lg-0 order-1">

@@ -1,9 +1,13 @@
+from datetime import timedelta
+
+from django.http.response import HttpResponse
 from .decorators import allowed_only_tournament_owner
 from django.shortcuts import redirect, render
 from django.utils import timezone
 from .models import (EnrollmentInTournament, EnrollmentTeam, TeamMember,
                     Teams, Token, TopWinners, TournaRegistration, TournaWinnerResult,
                     HomeImages, TournamentOrganizer, EnrolledTournaments)
+from scrims.models import ScrimsAddOnTournament
 from .tasks import send_multi_email_task, send_single_email_task
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -81,6 +85,8 @@ def filter_tournament(request):
 def tournament_detail(request, pk):
     today = timezone.now()
     tournament = TournaRegistration.objects.get(id=pk)
+    scrimst3_tourna = ScrimsAddOnTournament.objects.filter(tournament = tournament)
+
 
     try:
         # fetching all the enrolled teams for the tournament
@@ -132,8 +138,19 @@ def tournament_detail(request, pk):
         'teams': teams,
         'winners': teams[0:3],
         'active_user_teams': active_user_teams,
+        'scrimst3_tourna': scrimst3_tourna,
     }
-    return render(request, 'tournament/tournament-details.html', context=context)
+
+    if today >= tournament.start_at:
+        for scrim in scrimst3_tourna:
+            if scrim.status_is == 'LIVE':
+                return redirect(f"/tournament/scrims/instance/{pk}/{scrim.id}/")
+            elif scrim.status_is == 'UPCOMING':
+                return redirect(f"/tournament/scrims/instance/{pk}/{scrim.id}/")
+            else:
+                return render(request, 'tournament/tournament-details.html', context=context)
+    else:
+        return render(request, 'tournament/tournament-details.html', context=context)
 
 
 # creation of a tournament 
@@ -145,7 +162,9 @@ def create_tournament(request):
         tournament_date = request.POST.get('tournament_date')
         tournament_time = request.POST.get('tournament_time')
         tournament_game = request.POST.get('tournament_game')
-        tournament_type = request.POST.get('tournament_type')
+        tournament_game_type = request.POST.get("tournament_type")
+        tournament_day_counter = request.POST.get("scrims_days") if request.POST.get("scrims_days") else 0
+        tournament_type = request.POST.get('team_type')
         tournament_slots = request.POST.get('tournament_slots')
         tournament_rules = request.POST.get('tournament_rules')
         discord_server_id = request.POST.get('discord_server_id') if request.POST.get('discord_server_id') else 0
@@ -157,25 +176,37 @@ def create_tournament(request):
         # otherwise will use the default one
         if 'myfile' in request.FILES:
             tournament_banner = request.FILES['myfile']
-            TournaRegistration.objects.create(
+            new_tournament = TournaRegistration.objects.create(
                 admin=organizer, tournament_name=tournament_name,
                 date=tournament_date, time=tournament_time, 
-                banner=tournament_banner, game_type=tournament_game,
+                banner=tournament_banner, game=tournament_game,
+                game_type=tournament_game_type, game_days_count=tournament_day_counter,
                 team_type= tournament_type, slots=tournament_slots,
                 rules=tournament_rules, discord_server_id=discord_server_id,
                 youtube_url=youtube_url
             )
         else:
             tournament_banner = None
-            TournaRegistration.objects.create(
+            new_tournament = TournaRegistration.objects.create(
                 admin=organizer, tournament_name=tournament_name,
                 date=tournament_date, time=tournament_time, 
-                game_type=tournament_game,
+                game=tournament_game,
+                game_type=tournament_game_type, game_days_count=tournament_day_counter,
                 team_type= tournament_type, slots=tournament_slots,
                 rules=tournament_rules, discord_server_id=discord_server_id,
                 youtube_url=youtube_url
             ) 
-            
+        
+        if int(tournament_day_counter) >= 2:
+            start_at = new_tournament.start_at
+            for i in range(1, int(tournament_day_counter)):
+                start_at = start_at + timedelta(days=1)
+                end_at = start_at + timedelta(minutes=30)
+                ScrimsAddOnTournament.objects.create(tournament_id = new_tournament.id, admin=new_tournament.admin,
+                        tournament_name=f"{new_tournament.tournament_name} Day {i+1}",
+                        start_at=start_at, end_at=end_at, slots=new_tournament.slots)
+
+                
         messages.success(request, f"Tournament {tournament_name} created successfully")
         print(f"Tournament {tournament_name} created!")
 
@@ -216,7 +247,7 @@ def register_by_existing_team(request, pk):
         EnrolledTournaments.objects.create(user=request.user, tournament=tournament)
         
         # EnrollmentTeam(tournament_id=reg_tournament.id, enrolled_teams_id=new_team.id)
-        messages.success(request, f"Registered successfully")
+        messages.success(request, f"Your Team {team.team_name} Registered successfully")
         return redirect(f'/tournament/{pk}/')
     return redirect(f'/tournament/{pk}/')
 
@@ -300,7 +331,7 @@ def change_team_confirmation_status(request, pk, pk2):
     email_data_dict = {
         'team_name': team.team_name,
         'team_email': team.team_email,
-    }
+    }   
 
     content_data_dict = {
         'team_name': team.team_name,
@@ -491,7 +522,7 @@ def save_tourna_result(request, pk):
 
             return JsonResponse({'status': 'Save', 'response_data': teams})
         except Exception as e:
-            messages.error(request, "no")
+            messages.error(request, "Data can not be updated!")
             return JsonResponse({'status': 0})
     else:
         return JsonResponse({'status': 0})
@@ -524,8 +555,8 @@ def update_tourna_result(request):
 
 
 # sending tournament result based on above CRUD
-@allowed_only_tournament_owner
 @login_required(login_url='login')
+@allowed_only_tournament_owner
 def send_tourna_result(request, pk):
     tournament = TournaRegistration.objects.get(id=pk)
     try:
@@ -542,7 +573,7 @@ def send_tourna_result(request, pk):
     # top 3 will get congratulations email
     if len(teams) >=3:
         for i in teams[0:3]:
-            team = Teams.objects.get(pk=int(21))
+            team = Teams.objects.get(pk=i.id)
             TopWinners.objects.create(team_owner_id= team.team_owner.id,
                                         tournament=tournament, team=team)
 
@@ -551,7 +582,7 @@ def send_tourna_result(request, pk):
 
         content_data_dict ={
             'tournament_name': tournament.tournament_name,
-            'tournament_url': f'http://127.0.0.1:8000/tournament/{pk}/'
+            'tournament_url': f'{settings.BASE_URL}tournament/{pk}/'
         }
 
         winner_email_body = f"Congratulations! You win the {tournament.tournament_name} tournament"
@@ -572,7 +603,7 @@ def send_tourna_result(request, pk):
         }
         content_data_dict ={
             'tournament_name': tournament.tournament_name,
-            'tournament_url': f'http://127.0.0.1:8000/tournament/{pk}/'
+            'tournament_url': f'{settings.BASE_URL}tournament/{pk}/'
         }
         email_body = f"Congratulations! You win the {tournament.tournament_name} tournament"
         email_content = render_to_string("emails/top_three_tournament_winner_result.html", content_data_dict)

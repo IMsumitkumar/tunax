@@ -1,0 +1,146 @@
+{% block custom_style %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Play:wght@700&display=swap');
+
+
+    .table-container td {
+        color: black;
+        text-align: center;
+        padding: 8px;
+        background-color: white;
+    }
+
+    .table-container th {
+        text-align: center;
+        padding: 8px;
+    }
+
+    .heading1 {
+        color: white;
+        text-align: center;
+        font-size: 35px;
+        font-weight: 600;
+        margin-bottom: 7px;
+        word-spacing: 4mm;
+
+    }
+
+    h2 {
+        padding-top: 0px;
+        color: white;
+        text-align: center;
+        margin: 10px;
+        font-size: 22px;
+    }
+
+    .heading {
+        color: orange;
+        text-align: center;
+        font-size: 40px;
+        font-weight: 600;
+    }
+
+    .table-div {
+        display: flex;
+        justify-content: center;
+    }
+
+    .tr1 th {
+        background: none;
+        border: none;
+        color: white;
+    }
+
+    .th1 {
+        width: 25px;
+    }
+
+    .th2 {
+        width: 220px;
+    }
+
+    .th3 {
+        width: 90px;
+    }
+
+    .th4 {
+        width: 80px;
+    }
+
+    .th5 {
+        width: 70px;
+    }
+
+    .para {
+        color: white;
+        text-align: center;
+        font-weight: 100;
+        word-spacing: 7mm;
+    }
+
+    .table-content-ss {
+        background-image: linear-gradient(45deg, rgb(73, 160, 30) 0%, rgb(73, 160, 30) 6%,rgb(88, 141, 55) 6%, rgb(88, 141, 55) 11%,rgb(103, 122, 81) 11%, rgb(103, 122, 81) 55%,rgb(118, 103, 106) 55%, rgb(118, 103, 106) 81%,rgb(132, 84, 131) 81%, rgb(132, 84, 131) 83%,rgb(147, 65, 156) 83%, rgb(147, 65, 156) 92%,rgb(162, 46, 182) 92%, rgb(162, 46, 182) 95%,rgb(177, 27, 207) 95%, rgb(177, 27, 207) 100%),linear-gradient(112.5deg, rgb(73, 160, 30) 0%, rgb(73, 160, 30) 6%,rgb(88, 141, 55) 6%, rgb(88, 141, 55) 11%,rgb(103, 122, 81) 11%, rgb(103, 122, 81) 55%,rgb(118, 103, 106) 55%, rgb(118, 103, 106) 81%,rgb(132, 84, 131) 81%, rgb(132, 84, 131) 83%,rgb(147, 65, 156) 83%, rgb(147, 65, 156) 92%,rgb(162, 46, 182) 92%, rgb(162, 46, 182) 95%,rgb(177, 27, 207) 95%, rgb(177, 27, 207) 100%),linear-gradient(67.5deg, rgb(73, 160, 30) 0%, rgb(73, 160, 30) 6%,rgb(88, 141, 55) 6%, rgb(88, 141, 55) 11%,rgb(103, 122, 81) 11%, rgb(103, 122, 81) 55%,rgb(118, 103, 106) 55%, rgb(118, 103, 106) 81%,rgb(132, 84, 131) 81%, rgb(132, 84, 131) 83%,rgb(147, 65, 156) 83%, rgb(147, 65, 156) 92%,rgb(162, 46, 182) 92%, rgb(162, 46, 182) 95%,rgb(177, 27, 207) 95%, rgb(177, 27, 207) 100%),linear-gradient(90deg, rgb(24, 15, 143),rgb(170, 57, 157)); background-blend-mode:overlay,overlay,overlay,normal;        /* background-image: url('https://images.wallpapersden.com/image/download/pubg-season-10_bGpobm6UmZqaraWkpJRobWllrWZtbWU.jpg'); */
+        background-repeat: no-repeat;
+        background-size: cover;
+        font-family: 'Play', sans-serif;
+        align-items: center;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        border-radius: 10px;
+        box-shadow: 1px 12px 12px black;
+    }
+</style>
+{% endblock %}
+
+<div class="d-flex justify-content-center">
+    <button style="float: right; border-radius: 20px;" type="button" class="login-button btn btn-secondary mb-2"
+        data-toggle="modal" data-target="#pointsTableModal">
+        <b>points Table </b>
+    </button>
+</div>
+
+<div style="overflow-y:auto;" class="modal fade" id="pointsTableModal" tabindex="-1" role="dialog"
+    aria-labelledby="pointsTableModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="model-text"> </h3>
+            </div>
+            <div class="modal-body">
+                <div id="point-table-imge">
+                    <div  class="table-content-ss" >
+                        <h1 class="heading1">{{tournament.tournament_name}}</h1>
+                        <h2>CUSTOM MATCH</h2>
+                        <h1 class="heading">LEADER BOARD</h1>
+                        <div class="table-div">
+                            
+                            <table style="border-collapse: separate;" class="table-container">
+                                <tr class="tr1">
+                                    <th class="th1">S.NO.</th>
+                                    <th class="th2">Team Name</th>
+                                    <th class="th3">Place PTS</th>
+                                    <th class="th4">Kill PTS</th>
+                                    <th class="th5">Total</th>
+                                </tr>
+                                {% for t in teams %}
+                                <tr>
+                                    <td>#{{ forloop.counter }}</td>
+                                    <td>{{t.teamname}}</td>
+                                    <td>{{t.killspts}}</td>
+                                    <td>{{t.placepts}}</td>
+                                    <td>{{t.total_points}}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center mt-3">
+                    <button id="dwnld-ptable" class="invite-button btn btn-secondary">Download</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

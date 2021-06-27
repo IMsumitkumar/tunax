@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'tournament.apps.TournamentConfig',
     'userprofile.apps.UserprofileConfig',
     'accounts',
+    'scrims',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

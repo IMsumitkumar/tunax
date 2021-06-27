@@ -1,7 +1,11 @@
+from django.utils import timezone
+from scrims.models import EnrollmentInScrim, EnrollmentTeamInScrim, ScrimsAddOnTournament
 from django.db.models.query_utils import Q
 from django.http import request
 from tournament.models import EnrollmentInTournament, EnrollmentTeam, Teams, TopWinners, TournaRegistration, TournamentOrganizer
 from django import template
+from datetime import timedelta
+
 
 register = template.Library()
 
@@ -11,8 +15,6 @@ def have_tournament_owner_permission(user, pk):
 
     try:
         status = (user == tournament.admin or TournamentOrganizer.objects.filter(tournament=tournament).filter(helper=user).exists())
-        print(status)
-        print(TournamentOrganizer.objects.filter(tournament=tournament))
         return status
     except:
         return False
@@ -42,8 +44,8 @@ def user_already_registered(user, pk):
         team = Teams.objects.get(id = x.enrolled_teams.id)
         if team.team_owner == user:
             return True
-    else:
-        return False
+        else:
+            return False
 
 
 @register.filter('is_winner')
@@ -70,4 +72,40 @@ def have_youtube(youtube_url):
     else:
         return False
 
+@register.filter('next_number')
+def next_number(num):
+    return num + 1
 
+
+@register.filter('user_already_registered_in_scrim')
+def user_already_registered_in_scrim(user, scrim_instance_id):
+    scrim_instance = ScrimsAddOnTournament.objects.get(id=scrim_instance_id)
+    try:
+        enrolled_teams = EnrollmentTeamInScrim.objects.select_related('scrim_instance') \
+                    .filter(scrim_instance=EnrollmentInScrim.objects.get(scrim_instance=scrim_instance))
+    except:
+        enrolled_teams = []
+
+    for i in enrolled_teams:
+        x = EnrollmentTeamInScrim.objects.get(id=i.id)
+        team = Teams.objects.get(id = x.enrolled_teams.id)
+        if team.team_owner == user:
+            return True
+        else:
+            return False
+
+@register.filter("active_before_24_hour")
+def active_before_24_hour(start_time):
+    today = timezone.now()
+    before_one_day = start_time - timedelta(days=1)
+    if today >= before_one_day:
+        return True
+    else:
+        return False
+
+@register.filter("is_game_type_scrims")
+def is_game_type_scrims(game_type: str):
+    if game_type == 'T3 Scrims':
+        return True
+    else:
+        return False

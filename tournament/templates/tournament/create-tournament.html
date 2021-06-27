@@ -46,29 +46,60 @@
                         <h4 class="">provide additional data</h4>
                     </div>
                     <div class="widget-content widget-content-area">
-                        <div class="form-row mb-4">
-                            <div class="form-group col-md-6">
-                                <label for="inputCity">Game</label>
-                                <select name="tournament_game" id="inputState1" class="form-control" required>
-                                    <!-- <option selected="">Choose...</option> -->
-                                    <option>PUBG</option>
-                                </select>
 
+                        <div class="form-row mb-4">
+                            <div class="form-group col-md-3">
+                                <label for="inputgame">Game</label>
+                                <select name="tournament_game" id="inputgame" class="form-control">
+                                    <!-- <option selected="">Choose...</option> -->
+                                    <option>BGMI</option>
+                                    <option>PUBG</option>
+                                    <option>PUBG LITE</option>
+                                    <option disabled>COD</option>
+                                </select>
                             </div>
-                            <div class="form-group col-md-4">
-                                <label for="inputState">Team type</label>
-                                <select name="tournament_type" id="inputState2" class="form-control" required>
+                            <div class="form-group col-md-3">
+                                <label for="inputGameType">Game type</label>
+                                <select name="tournament_type" id="inputGameType" class="form-control" required>
+                                    <option value="Custom Match">Custom Match</option>
+                                    <option value="Tournament">Tournament</option>
+                                    <option value="T3 Scrims">T3 Scrims</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3" id="add-day-forGameTypeDiv">
+                                <label for="inputScrimsDays">No. of Days</label>
+                                <select name="scrims_days" id="inputScrimsDays" class="form-control" required>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inpuTeamType">Team Type</label>
+                                <select name="team_type" id="inpuTeamType" class="form-control" required>
                                     <!-- <option selected="">Choose...</option> -->
                                     <option>Solo</option>
                                     <option>Duo</option>
                                     <option>Squad</option>
                                 </select>
                             </div>
-                            <div class="form-group col-md-2">
-                                <label for="inputZip">Number of slots</label>
-                                <input name="tournament_slots" type="number" class="form-control" min="1" max="100" required>
+                            <div class="form-group col-md-3">
+                                <label for="inputslot">Number of slots</label>
+                                <input name="tournament_slots" id="inputslot" type="number" class="form-control" min="1" max="100" value="10" required>
                             </div>
                         </div>
+
                         <div class="form-row mb-4">
                             <div class="form-group col-md-6">
                                 <input name="discord_server_id" type="number" class="form-control" placeholder="Discord Server ID (Optional)">
@@ -90,9 +121,10 @@
 </div>
 
 {% block custom_js %}
-    <script src="{% static 'assets/js/libs/jquery-3.1.1.min.js' %}"></script>
+    <!-- <script src="{% static 'assets/js/libs/jquery-3.1.1.min.js' %}"></script> -->
     <script src="{% static 'plugins/file-upload/file-upload-with-preview.min.js' %}"></script>
     <script src="{% static 'plugins/editors/markdown/custom-markdown.js' %}"></script>
+    <script src="{% static 'assets/js/own.js' %}"></script>
     <script>
         var firstUpload = new FileUploadWithPreview('myFirstImage');
     </script>

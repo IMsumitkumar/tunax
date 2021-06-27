@@ -1,0 +1,238 @@
+{% load static %}
+{% load custom_tags %}
+
+{% if request.user|user_already_registered_in_scrim:scrim_instance.id %}
+<button style="float: right; border-radius: 20px;" type="button" class="login-button btn btn-secondary mb-2" disabled>
+    <b>Joined</b>
+</button>
+{% else %}
+    {% if scrim_instance.start_at|active_before_24_hour %}
+        <button style="float: right; border-radius: 20px;" type="button"  class="login-button btn btn-secondary mb-2" data-toggle="modal" data-target="#chooseRegistrationWayModal">
+            <b>Join</b>
+        </button>
+        <div class="modal fade login-modal" id="chooseRegistrationWayModal" tabindex="-1" role="dialog" aria-labelledby="chooseRegistrationWayModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                </div>
+                <div class="modal-body">
+                    {% if active_user_teams.count %}
+                <form action="{% url 'register-existing-team-in-t3scrim' tournament.id scrim_instance.id %}" class="mt-0" method="post">{% csrf_token %}
+                    <div class="mt-2">
+                        <select name="user_team_id" class="selectpicker form-control" data-live-search="true">
+                            {% for i in active_user_teams %}
+                            <option value="{{i.id}}">{{i.team_name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <br>
+                    
+                    <button type="submit" class="login-button btn btn-secondary mt-2 mb-2 btn-block">Join tournament</button>
+                    
+                </form>
+                {% else %}
+                    <button class="invite-button btn btn-secondary">You don't have any team registered yet. Register a team and use that team to register in any tournament by one click</button>
+                {% endif %}
+
+                <div class="division">
+                        <span><b>OR</b></span>
+                </div>
+
+                <div class="social">
+                    <button type="button" class="login-button btn btn-secondary mb-2 btn-block" data-dismiss="modal" data-toggle="modal" data-target="#tournamentRegistrationModal">
+                        <b>create New team   </b>
+                    </button>
+                </div>
+
+
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <div style="overflow-y:auto;" class="modal" id="tournamentRegistrationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="model-text">Register your team in tournament</h3>
+                    </div>
+                    <form action="{% url 'team-registration-in-t3scrim' tournament.id scrim_instance.id confirmed_teams|length scrim_instance.slots %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                        <div class="modal-body"> 
+                            
+                            
+                            <div class="row">
+                                <div class="col-xl-2 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                    <div class="avatar avatar-xl mt-4 ml-4">
+                                        <input class="form-control-file" name="teamavatar" type="file" class="">
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-xl-10 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                    <div class="row">
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                            <div class="form-group mt-3 mx-4">
+                                                <input name="team_name" type="text" class="form-control" placeholder="Clan Name" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                            <div class="form-group mt-3 mx-4">
+                                                <input name="whatsapp_number" type="number" class="form-control" placeholder="Whatsapp Number (optional)">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mt-3 mx-4">
+                                        <input name="team_email" type="email" class="form-control" placeholder="Team Email" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                                <div class="row">
+                                    <div class="col-xl-1 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <button type="button" class="btn btn-secondary mt-2">#1</button>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <div class="form-group mt-1">
+                                            <input name="playername" type="text" class="form-control" placeholder="player IGName" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <div class="form-group mt-1">
+                                            <input name="discordtag" type="text" class="form-control" placeholder="Discard Tag (optional)" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <div class="form-group mt-1">
+                                            <select name="teamrole" class="form-control">
+                                                <option value="null">--select--</option>
+                                                <option>IGL</option>
+                                                <option>FRAGGER</option>
+                                                <option>RUSHER</option>
+                                                <option>MEMBER</option>
+                                            </select>
+                
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-1 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <button type="button" class="btn btn-secondary mt-2">#2</button>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <div class="form-group mt-1">
+                                            <input name="playername" type="text" class="form-control" placeholder="player IGName" >
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <div class="form-group mt-1">
+                                            <input name="discordtag" type="text" class="form-control" placeholder="Discard Tag (optional)">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <div class="form-group mt-1">
+                                            <select name="teamrole" class="form-control">
+                                                <option>IGL</option>
+                                                <option>FRAGGER</option>
+                                                <option>RUSHER</option>
+                                                <option>MEMBER</option>
+                                            </select>
+                
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-1 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <button type="button" class="btn btn-secondary mt-2">#3</button>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <div class="form-group mt-1">
+                                            <input name="playername" type="text" class="form-control" placeholder="player IGName">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <div class="form-group mt-1">
+                                            <input name="discordtag" type="text" class="form-control" placeholder="Discard Tag (optional)">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <div class="form-group mt-1">
+                                            <select name="teamrole" class="form-control">
+                                                <option>IGL</option>
+                                                <option>FRAGGER</option>
+                                                <option>RUSHER</option>
+                                                <option>MEMBER</option>
+                                            </select>
+                
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-1 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <button type="button" class="btn btn-secondary mt-2">#4</button>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <div class="form-group mt-1">
+                                            <input name="playername" type="text" class="form-control" placeholder="player IGName">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <div class="form-group mt-1">
+                                            <input name="discordtag" type="text" class="form-control" placeholder="Discard Tag (optional)">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <div class="form-group mt-1">
+                                            <select name="teamrole" class="form-control">
+                                                <option>IGL</option>
+                                                <option>FRAGGER</option>
+                                                <option>RUSHER</option>
+                                                <option>MEMBER</option>
+                                            </select>
+                
+                                        </div>
+                                    </div>
+                                </div> 
+                                <div class="row">
+                                    <div class="col-xl-1 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <button type="button" class="btn btn-secondary mt-2">#5</button>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <div class="form-group mt-1">
+                                            <input name="playername" type="text" class="form-control" placeholder="player IGName">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <div class="form-group mt-1">
+                                            <input name="discordtag" type="text" class="form-control" placeholder="Discard Tag (optional)">
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                                        <div class="form-group mt-1">
+                                            <select name="teamrole" class="form-control">
+                                                <option>IGL</option>
+                                                <option>FRAGGER</option>
+                                                <option>RUSHER</option>
+                                                <option>MEMBER</option>
+                                            </select>
+                
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i> Discard</button>
+                            <button type="submit" id="validate-team" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    {% else %}
+    <button style="float: right; border-radius: 20px;" type="button" class="btn btn-dark mb-2" disabled>
+        <b>Locked</b>
+    </button>
+    {% endif %}
+{% endif %}

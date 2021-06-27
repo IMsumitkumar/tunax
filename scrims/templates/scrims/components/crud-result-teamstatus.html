@@ -1,0 +1,116 @@
+{% load static %}
+
+
+<div class="row mt-3">
+    <div class="col-lg-12 col-12 layout-spacing">
+        <div class="statbox widget box box-shadow">
+            <div class="row">
+                <div class="col-lg-12 layout-spacing">
+                    <div class="team-list-section"> 
+                        <div data-section="s-pending" class="team-list-container" data-connect="sorting">
+                            <div class="status-container text-center">
+                                <h6>Pending Teams</h6>
+                                <hr>
+                                {% for team in pending_teams %}
+                                    <div class="card component-card_1 mt-2">
+                                        <div class="row">
+                                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">    
+                                                <div class="avatar avatar-lg">
+                                                    <img alt="avatar" src="{{team.team_pic.url}}" class="rounded" width="40" height="40" />
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7 mt-2">
+                                                <p class="body-title"><b>  {{ team.team_name }}</p></b>
+                                            </div>
+                                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mt-2 mx-2">
+                                                <div class="btn-group">
+                                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>                                                                        <!-- </div> -->
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        {% for member in team.get_team_member_list %}
+                                                        <a class="label-group-item dropdown-item position-relative"><b> {{member.team_member}}</b></a>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>                                                    
+                                    </div>
+                                {% endfor %} 
+                            </div> 
+                        </div>
+
+                        <div data-section="s-confirm" class="team-list-container" data-connect="sorting">
+                            <div class="status-container text-center">
+                                <h6>Confirmed Teams</h6>
+                                <hr>
+                                {% for team in confirmed_teams %}
+                                    <div class="card component-card_1 mt-3">
+                                        <div class="row">
+                                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">    
+                                                <div class="avatar avatar-lg">
+                                                    <img alt="avatar" src="{{team.team_pic.url}}" class="rounded" width="40" height="40" />
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7 mt-2">
+                                                <p class="body-title"><b>  {{ team.team_name }}</p></b>
+                                            </div>
+                                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mt-2 mx-2">
+                                                <div class="btn-group">
+                                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>                                                                        <!-- </div> -->
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        {% for member in team.get_team_member_list %}
+                                                        <a class="label-group-item dropdown-item position-relative"><b> {{member.team_member}}</b></a>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>                                                    
+                                    </div> 
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div data-section="s-decline" class="team-list-container" data-connect="sorting">
+                            <div class="status-container text-center">
+                                <h6>Declined Teams</h6>
+                                <hr>
+                                {% for team in declined_teams %}
+                                    <div class="card component-card_1 mt-3">
+                                        <div class="row">
+                                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2">    
+                                                <div class="avatar avatar-lg">
+                                                    <img alt="avatar" src="{{team.team_pic.url}}" class="rounded" width="40" height="40" />
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-7 col-lg-7 col-md-7 col-sm-7 col-7 mt-2">
+                                                <p class="body-title"><b>  {{ team.team_name }}</p></b>
+                                            </div>
+                                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2 col-2 mt-2 mx-2">
+                                                <div class="btn-group">
+                                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>                                                                        <!-- </div> -->
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right">
+                                                        {% for member in team.get_team_member_list %}
+                                                        <a class="label-group-item dropdown-item position-relative"><b> {{member.team_member}}</b></a>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>                                                    
+                                    </div> 
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

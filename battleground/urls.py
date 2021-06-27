@@ -15,6 +15,7 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('profile/', include('userprofile.urls')),
     path('accounts/', include('allauth.urls')),
+    path('tournament/scrims/', include("scrims.urls")),
 ]
 
 handler404 = 'battleground.views.error_404_view'

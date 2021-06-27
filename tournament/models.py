@@ -56,7 +56,9 @@ class TournaRegistration(models.Model):
                         format='WebP',
                         options={'quality': 60},
                         null=True, blank=True)
+    game = models.CharField(max_length=10, blank=False, null=False)
     game_type = models.CharField(max_length=10, blank=False, null=False)
+    game_days_count = models.IntegerField()
     team_type = models.CharField(max_length=10, blank=False, null=False)
     slots = models.IntegerField()
     rules = RichTextField()
@@ -65,7 +67,6 @@ class TournaRegistration(models.Model):
     is_over = models.BooleanField(default=False)
     start_at = models.DateTimeField(null=True, blank=True)
     end_at = models.DateTimeField(null=True, blank=True)
-    # objects = TournamentStatusManager()
 
     def save(self, *args, **kwargs):
         self.start_at = combine_datetime(self.date, self.time)

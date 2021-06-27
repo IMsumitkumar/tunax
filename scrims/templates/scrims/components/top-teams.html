@@ -1,0 +1,138 @@
+{% load static %}
+
+
+<div class="col-xl-3 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing d-none d-lg-block">
+    {% if not request.user.is_authenticated %}
+    <div class="col">
+        <div class="login-page">
+            <div class="login">
+                <butto type="button" class="login-button btn btn-secondary" data-toggle="modal" data-target="#loginModal">
+                    Login / Signup
+                </button> 
+            </div>
+            <!-- <div class="signup">
+                <a href="{% url 'register' %}" type="button" class="signup-button btn btn-secondary mb-2 mt-2">
+                    Signup
+                </a>
+            </div> -->
+        </div>
+    </div>
+    <br>
+    {% endif %}
+    
+    <div class="widget-heading">
+        <h5 style="color: azure;" class="text-center"><b>TOP TEAMS</b></h5>
+    </div>
+    <p></p>
+    <div style="padding: 0px !important;" class="widget widget-table-two">
+        <div class="widget-content">
+            <table class="table">
+                <thead>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="td-container">
+                            <span style="font-size: 20px; color: rgb(255, 255, 255); font-weight: 700;" class="team-content-1">
+                                1
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="td-content customer-name">
+                                <div class="team-pic">
+                                    <img src="{% static 'assets/img/default_team_profile.png' %}" alt="avatar">
+                                </div>
+                                <div>HYDRA DYNAMO</div>
+                            </div>
+                        </td>
+
+                        <td><div class="td-content"><span class="badge outline-badge-primary"></span></div></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="font-size: 20px; color: rgb(255, 255, 255); font-weight: 700;" class="team-content-2">
+                                2
+                            </span>
+                        </td>
+                        <td><div class="td-content customer-name"><img src="{% static 'assets/img/default_team_profile.png' %}" alt="avatar"><span>Mortal Engines</span></div></td>
+                        <td><div class="td-content"><span class="badge outline-badge-primary"></span></div></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="font-size: 20px; color: rgb(255, 255, 255); font-weight: 700;" class="team-content">
+                                3
+                            </span>
+                        </td>
+                        <td><div class="td-content customer-name"><img src="{% static 'assets/img/default_team_profile.png' %}" alt="avatar">Team ZI</div></td>
+                        <td><div class="td-content"><span class="badge outline-badge-primary"></span></div></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="font-size: 20px; color: rgb(255, 255, 255); font-weight: 700;" class="team-content-2">
+                                4
+                            </span>
+                        </td>
+                        <td><div class="td-content customer-name"><img src="{% static 'assets/img/default_team_profile.png' %}" alt="avatar">8Bit Thug</div></td>
+                        <td><div class="td-content"><span class="badge outline-badge-primary"></span></div></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="font-size: 20px; color: rgb(255, 255, 255); font-weight: 700;" class="team-content">
+                                5
+                            </span>
+                        </td>
+                        <td><div class="td-content customer-name"><img src="{% static 'assets/img/default_team_profile.png' %}" alt="avatar">TxT Esports</div></td>
+                        <td><div class="td-content"><span class="badge outline-badge-primary"></span></div></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="font-size: 20px; color: rgb(255, 255, 255); font-weight: 700;" class="team-content-2">
+                                6
+                            </span>
+                        </td>
+                        <td><div class="td-content customer-name"><img src="{% static 'assets/img/default_team_profile.png' %}" alt="avatar">PandaOP</div></td>
+                        <td><div class="td-content"><span class="badge outline-badge-primary"></span></div></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="font-size: 20px; color: rgb(255, 255, 255); font-weight: 700;" class="team-content">
+                                7
+                            </span>
+                        </td>
+                        <td><div class="td-content customer-name"><img src="{% static 'assets/img/default_team_profile.png' %}" alt="avatar">King of Pirates</div></td>
+                        <td><div class="td-content"><span class="badge outline-badge-primary"></span></div></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="font-size: 20px; color: rgb(255, 255, 255); font-weight: 700;" class="team-content-2">
+                                8
+                            </span>
+                        </td>
+                        <td><div class="td-content customer-name"><img src="{% static 'assets/img/default_team_profile.png' %}" alt="avatar">IRON MAN</div></td>
+                        <td><div class="td-content"><span class="badge outline-badge-primary"></span></div></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="font-size: 20px; color: rgb(255, 255, 255); font-weight: 700;" class="team-content">
+                                9
+                            </span>
+                        </td>
+                        <td><div class="td-content customer-name"><img width="30px" src="{% static 'assets/img/default_team_profile.png' %}" alt="avatar">Andy King</div></td>
+                        <td><div class="td-content"><span class="badge outline-badge-primary"></span></div></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span style="font-size: 20px; color: rgb(255, 255, 255); font-weight: 700;" class="team-content-10">
+                                10
+                            </span>
+                        </td>
+                        <td><div class="td-content customer-name"><img src="{% static 'assets/img/default_team_profile.png' %}" alt="avatar">Andy King</div></td>
+                        <td><div class="td-content"><span class="badge outline-badge-primary"></span></div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

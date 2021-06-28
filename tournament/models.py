@@ -48,18 +48,18 @@ class HomeImages(models.Model):
 class TournaRegistration(models.Model):
     admin = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     tournament_name = models.CharField(max_length=100, blank=False, null=False)
-    date = models.CharField(max_length=11, blank=False, null=False)
-    time = models.CharField(max_length=11, blank=False, null=False)
+    date = models.CharField(max_length=100, blank=False, null=False)
+    time = models.CharField(max_length=100, blank=False, null=False)
     banner = ProcessedImageField(upload_to='tourna_banner/',
                         default='default/teampic.jpg',
                         processors=[ResizeToFill(300, 200)],
                         format='WebP',
                         options={'quality': 60},
                         null=True, blank=True)
-    game = models.CharField(max_length=10, blank=False, null=False)
-    game_type = models.CharField(max_length=10, blank=False, null=False)
+    game = models.CharField(max_length=50, blank=False, null=False)
+    game_type = models.CharField(max_length=50, blank=False, null=False)
     game_days_count = models.IntegerField()
-    team_type = models.CharField(max_length=10, blank=False, null=False)
+    team_type = models.CharField(max_length=50, blank=False, null=False)
     slots = models.IntegerField()
     rules = RichTextField()
     discord_server_id = models.PositiveBigIntegerField()
@@ -130,7 +130,7 @@ class Teams(models.Model):
     team_name = models.CharField(max_length=100, blank=True, null=True)
     team_email = models.EmailField(max_length=100, blank=True, null=True)
     team_whstapp_no = models.IntegerField(blank=True, null=True)
-    is_confirmed = models.CharField(choices=status, default='PENDING', max_length=10)
+    is_confirmed = models.CharField(choices=status, default='PENDING', max_length=50)
 
     def get_team_member_list(self):
         return self.team_desc.all()

@@ -30,6 +30,7 @@ def is_slots_left(total_slots, confirmed_slots):
 
 @register.filter('user_already_registered')
 def user_already_registered(user, pk):
+    print(pk)
     tournament = TournaRegistration.objects.get(id=pk)
 
     try:
@@ -37,12 +38,11 @@ def user_already_registered(user, pk):
                     .filter(tournament=EnrollmentInTournament.objects.get(tournament=tournament))
     except:
         enrolled_teams = []
-        
     
     for i in enrolled_teams:
         x = EnrollmentTeam.objects.get(id=i.id)
         team = Teams.objects.get(id = x.enrolled_teams.id)
-        if team.team_owner == user:
+        if team.team_owner.username == user.username:
             return True
         else:
             return False
@@ -89,7 +89,7 @@ def user_already_registered_in_scrim(user, scrim_instance_id):
     for i in enrolled_teams:
         x = EnrollmentTeamInScrim.objects.get(id=i.id)
         team = Teams.objects.get(id = x.enrolled_teams.id)
-        if team.team_owner == user:
+        if team.team_owner.username == user.username:
             return True
         else:
             return False

@@ -5,11 +5,11 @@
     <div class="items infinite-item">
         <div class="widget-card box box-shadow">
 
-            <a href="{% url 'tournament-detail' tournament.id %}"><img class="card-img-top" src="{{tournament.banner.url}}" alt="Card image cap"></a>
+            <a href="{% url 'tournament-detail' tournament.slug %}"><img class="card-img-top" src="{{tournament.banner.url}}" alt="Card image cap"></a>
             <div class="user-meta-info">
                 <div class="row">
                     <div class="col">
-                        <a href="{% url 'tournament-detail' tournament.id %}"><p class="tournament-name" data-name="Tourname Green"> <b>{{tournament.tournament_name}}</b></p></a>
+                        <a href="{% url 'tournament-detail' tournament.slug %}"><p class="tournament-name" data-name="Tourname Green"> <b>{{tournament.tournament_name}}</b></p></a>
                     </div>
                 </div>
             </div>

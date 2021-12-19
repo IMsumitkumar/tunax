@@ -20,7 +20,7 @@
                 </div>
                 <div class="modal-body">
                     {% if active_user_teams.count %}
-                <form action="{% url 'register-existing-team-in-t3scrim' tournament.id scrim_instance.id %}" class="mt-0" method="post">{% csrf_token %}
+                <form action="{% url 'register-existing-team-in-t3scrim' tournament.slug scrim_instance.slug %}" class="mt-0" method="post">{% csrf_token %}
                     <div class="mt-2">
                         <select name="user_team_id" class="selectpicker form-control" data-live-search="true">
                             {% for i in active_user_teams %}
@@ -59,7 +59,7 @@
                     <div class="modal-header">
                         <h3 class="model-text">Register your team in tournament</h3>
                     </div>
-                    <form action="{% url 'team-registration-in-t3scrim' tournament.id scrim_instance.id confirmed_teams|length scrim_instance.slots %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                    <form action="{% url 'team-registration-in-t3scrim' tournament.slug scrim_instance.slug confirmed_teams|length scrim_instance.slots %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
                         <div class="modal-body"> 
                             
                             

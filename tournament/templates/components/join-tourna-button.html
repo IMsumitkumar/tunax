@@ -19,7 +19,7 @@
         </div>
         <div class="modal-body">
             {% if active_user_teams.count %}
-          <form action="{% url 'register-existing-team' tournament.id %}" class="mt-0" method="post">{% csrf_token %}
+          <form action="{% url 'register-existing-team' tournament.slug %}" class="mt-0" method="post">{% csrf_token %}
             <div class="mt-2">
                 <select name="user_team_id" class="selectpicker form-control" data-live-search="true">
                     {% for i in active_user_teams %}
@@ -58,7 +58,7 @@
             <div class="modal-header">
                 <h3 class="model-text">Register your team in tournament</h3>
             </div>
-            <form action="{% url 'team-registration' tournament.id confirmed_teams|length tournament.slots %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+            <form action="{% url 'team-registration' tournament.slug confirmed_teams|length tournament.slots %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
                 <div class="modal-body"> 
                     
                     

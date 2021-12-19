@@ -107,11 +107,11 @@
                                         <!-- <div class="card item-content"> -->
                                             <div class="widget-card box box-shadow">
                                                 
-                                                <a href="{% url 'tournament-detail' tournament.id %}"><img class="card-img-top" style="border-radius:0.75rem!important;" src="{{tournament.banner.url}}" alt="Card image cap"></a>
+                                                <a href="{% url 'tournament-detail' tournament.slug %}"><img class="card-img-top" style="border-radius:0.75rem!important;" src="{{tournament.banner.url}}" alt="Card image cap"></a>
                                                 <div class="user-meta-info">
                                                     <div class="row">
                                                         <div class="col">
-                                                            <a href="{% url 'tournament-detail' tournament.id %}"><p class="tournament-name" data-name="Tourname Name"> <b>{{tournament.tournament_name}}</b></p></a>
+                                                            <a href="{% url 'tournament-detail' tournament.slug %}"><p class="tournament-name" data-name="Tourname Name"> <b>{{tournament.tournament_name}}</b></p></a>
                                                         </div>
                                                     </div>
                                                 </div>

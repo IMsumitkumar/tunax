@@ -4,11 +4,11 @@ from django.contrib.auth.models import User
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 from django.conf import settings
-from django.db.models.expressions import F
+from django.db.models.signals import pre_save
 from django.utils import timezone
 from .helping_functions import combine_datetime 
 from djrichtextfield.models import RichTextField
-
+from battleground.utils import unique_slug_generate
 
 class HomeImages(models.Model):
     home_name      = models.CharField(max_length=250)
@@ -48,6 +48,7 @@ class HomeImages(models.Model):
 class TournaRegistration(models.Model):
     admin = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     tournament_name = models.CharField(max_length=100, blank=False, null=False)
+    slug = models.SlugField(max_length=250, null=True, blank=True)
     date = models.CharField(max_length=100, blank=False, null=False)
     time = models.CharField(max_length=100, blank=False, null=False)
     banner = ProcessedImageField(upload_to='tourna_banner/',
@@ -85,6 +86,12 @@ class TournaRegistration(models.Model):
 
     def __str__(self):
         return self.tournament_name
+
+def slug_generator(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generate(instance)
+
+pre_save.connect(slug_generator, sender=TournaRegistration)
 
 class Clan(models.Model):
     admin = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)

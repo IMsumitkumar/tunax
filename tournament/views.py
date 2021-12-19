@@ -82,9 +82,9 @@ def filter_tournament(request):
 
 # detaiils of a perticular tournaments
 # pk is primary key of tournament 
-def tournament_detail(request, pk):
+def tournament_detail(request, tournament_slug):
     today = timezone.now()
-    tournament = TournaRegistration.objects.get(id=pk)
+    tournament = TournaRegistration.objects.get(slug=tournament_slug)
     scrimst3_tourna = ScrimsAddOnTournament.objects.filter(tournament = tournament)
 
 
@@ -144,9 +144,9 @@ def tournament_detail(request, pk):
     if today >= tournament.start_at:
         for scrim in scrimst3_tourna:
             if scrim.status_is == 'LIVE':
-                return redirect(f"/tournament/scrims/instance/{pk}/{scrim.id}/")
+                return redirect(f"/tournament/scrims/instance/{tournament_slug}/{scrim.id}/")
             elif scrim.status_is == 'UPCOMING':
-                return redirect(f"/tournament/scrims/instance/{pk}/{scrim.id}/")
+                return redirect(f"/tournament/scrims/instance/{tournament_slug}/{scrim.id}/")
             else:
                 return render(request, 'tournament/tournament-details.html', context=context)
     else:
@@ -217,8 +217,8 @@ def create_tournament(request):
 # will register a team in tournament which is already registered by the the user
 # on the platform, no need to recreate the same team again and again
 @login_required(login_url='login')
-def register_by_existing_team(request, pk):
-    tournament = TournaRegistration.objects.get(id=pk)
+def register_by_existing_team(request, tournament_slug):
+    tournament = TournaRegistration.objects.get(slug=tournament_slug)
     if request.method=='POST':
         # get the teamid from frontend and clone the team in a new model object
         # get the team members objects and clone the members in the new created team object
@@ -230,7 +230,7 @@ def register_by_existing_team(request, pk):
             TeamMember.objects.create(team_id=new_team.id, team_member=member.team_member,
                 discord_tag=member.discord_tag, team_role=member.team_role)
 
-        # reg_tournament = EnrollmentInTournament.objects.create(tournament_id=pk)
+        # reg_tournament = EnrollmentInTournament.objects.create(tournament_slug=tournament_slug)
         # print(reg_tournament)
         if EnrollmentInTournament.objects.filter(tournament=tournament).exists():
             # if already exist than use that otherwise create mew and join
@@ -248,13 +248,13 @@ def register_by_existing_team(request, pk):
         
         # EnrollmentTeam(tournament_id=reg_tournament.id, enrolled_teams_id=new_team.id)
         messages.success(request, f"Your Team {team.team_name} Registered successfully")
-        return redirect(f'/tournament/{pk}/')
-    return redirect(f'/tournament/{pk}/')
+        return redirect(f'/tournament/{tournament_slug}/')
+    return redirect(f'/tournament/{tournament_slug}/')
 
 
 # registration in tournament form
 @login_required(login_url='login')
-def register_in_tourna_form(request, pk, confirmed_slots, total_slots):
+def register_in_tourna_form(request, tournament_slug, confirmed_slots, total_slots):
     if request.method == 'POST':
         # if some one is trying to register using the link not the dashboard even when slots
         # are full than response will be like that.
@@ -263,7 +263,7 @@ def register_in_tourna_form(request, pk, confirmed_slots, total_slots):
         else:
             # get the values from backend 
             # whatsapp number will only accept integers, not special characters
-            tournament = TournaRegistration.objects.get(id=pk)
+            tournament = TournaRegistration.objects.get(slug=tournament_slug)
             team_name = request.POST.get('team_name')
             whatsapp_number = request.POST.get('whatsapp_number') if isinstance(request.POST.get('whatsapp_number'), int) \
                                                                      else None
@@ -311,21 +311,21 @@ def register_in_tourna_form(request, pk, confirmed_slots, total_slots):
             EnrolledTournaments.objects.create(user=request.user, tournament=tournament)
 
             messages.success(request, f"{team_obj.team_name} registered in {tournament.tournament_name} tournament")
-            return redirect(f'/tournament/{pk}/')
-    return redirect(f'/tournament/{pk}/')
+            return redirect(f'/tournament/{tournament_slug}/')
+    return redirect(f'/tournament/{tournament_slug}/')
 
 
 
 @login_required(login_url='login')
 @allowed_only_tournament_owner
-def change_team_confirmation_status(request, pk, pk2):
+def change_team_confirmation_status(request, tournament_slug, pk2):
     # a confirmation button will be pressed from the frontend
     # when this url hits, a (pk) specific team will be confirmed in the tournament
     team = Teams.objects.get(id = pk2)
     team.is_confirmed = 'CONFIRMED'
     team.save()
     # send email
-    tournament = TournaRegistration.objects.get(id=pk)
+    tournament = TournaRegistration.objects.get(slug=tournament_slug)
 
     # data dictionary used in email context
     email_data_dict = {
@@ -347,20 +347,20 @@ def change_team_confirmation_status(request, pk, pk2):
     email_content = get_template("emails/team_confirmation_email.html").render(content_data_dict)
     send_single_email_task.delay(email_data_dict, email_body, email_content)
 
-    return redirect(f'/tournament/{pk}/')
+    return redirect(f'/tournament/{tournament_slug}/')
 
 
 
 @login_required(login_url='login')
 @allowed_only_tournament_owner
-def change_team_decline_status(request, pk, pk2):
+def change_team_decline_status(request, tournament_slug, pk2):
     # a declination button will be pressed from the frontend
     # when this url hits, a (pk) specific team will be declined in the tournament
     team = Teams.objects.get(id = pk2)
     team.is_confirmed = 'DECLINED'
     team.save()
     # send email
-    tournament = TournaRegistration.objects.get(id=pk)
+    tournament = TournaRegistration.objects.get(slug=tournament_slug)
 
     # helps in email content
     email_data_dict = {
@@ -379,15 +379,15 @@ def change_team_decline_status(request, pk, pk2):
 
     send_single_email_task.delay(email_data_dict, email_body, email_content)
 
-    return redirect(f'/tournament/{pk}/')
+    return redirect(f'/tournament/{tournament_slug}/')
 
 
 # will send id password of the tournament to all the registered
 # cconfirmed teams, when admin wants to send the credentials     
 @login_required(login_url='login')
 @allowed_only_tournament_owner
-def send_id_password_to_registered_team(request, pk):
-    tournament = TournaRegistration.objects.get(id=pk)
+def send_id_password_to_registered_team(request, tournament_slug):
+    tournament = TournaRegistration.objects.get(slug=tournament_slug)
 
     # filter out alll the confirmed team of the tournament
     try:
@@ -433,17 +433,18 @@ def send_id_password_to_registered_team(request, pk):
         
         # sending emails using celery
         send_multi_email_task.delay(email_data_dict, email_body, email_content)
-        return redirect(f'/tournament/{pk}/')
+        messages.success(request, "ID PASSWORD sent to confirmed teams!")
+        return redirect(f'/tournament/{tournament_slug}/')
     else:
-        return redirect(f'/tournament/{pk}/')
+        return redirect(f'/tournament/{tournament_slug}/')
 
 
 @login_required(login_url='login')
 @allowed_only_tournament_owner
-def manage_tourna_result(request, pk):
+def manage_tourna_result(request, tournament_slug):
 
 
-    tournament = TournaRegistration.objects.get(id=pk)
+    tournament = TournaRegistration.objects.get(slug=tournament_slug)
     try:
         enrolled_teams = EnrollmentTeam.objects.select_related('tournament') \
                     .filter(tournament=EnrollmentInTournament.objects.get(tournament=tournament))
@@ -486,8 +487,8 @@ def manage_tourna_result(request, pk):
 # saving tournament result
 @login_required(login_url='login')
 @allowed_only_tournament_owner
-def save_tourna_result(request, pk):
-    tournament = TournaRegistration.objects.get(id=pk)
+def save_tourna_result(request, tournament_slug):
+    tournament = TournaRegistration.objects.get(slug=tournament_slug)
     if request.method == 'POST':
         try:
             general_team_id = request.POST.get('general_teamid')
@@ -557,10 +558,10 @@ def update_tourna_result(request):
 # sending tournament result based on above CRUD
 @login_required(login_url='login')
 @allowed_only_tournament_owner
-def send_tourna_result(request, pk):
-    tournament = TournaRegistration.objects.get(id=pk)
+def send_tourna_result(request, tournament_slug):
+    tournament = TournaRegistration.objects.get(slug=tournament_slug)
     try:
-        teams = TournaWinnerResult.objects.order_by('-total_points').filter(target_tournament_id=pk)
+        teams = TournaWinnerResult.objects.order_by('-total_points').filter(target_tournament_slug=tournament_slug)
         team_emails = []
         for i in teams:
             team_emails.append(i.email)
@@ -582,7 +583,7 @@ def send_tourna_result(request, pk):
 
         content_data_dict ={
             'tournament_name': tournament.tournament_name,
-            'tournament_url': f'{settings.BASE_URL}tournament/{pk}/'
+            'tournament_url': f'{settings.BASE_URL}tournament/{tournament_slug}/'
         }
 
         winner_email_body = f"Congratulations! You win the {tournament.tournament_name} tournament"
@@ -603,7 +604,7 @@ def send_tourna_result(request, pk):
         }
         content_data_dict ={
             'tournament_name': tournament.tournament_name,
-            'tournament_url': f'{settings.BASE_URL}tournament/{pk}/'
+            'tournament_url': f'{settings.BASE_URL}tournament/{tournament_slug}/'
         }
         email_body = f"Congratulations! You win the {tournament.tournament_name} tournament"
         email_content = render_to_string("emails/top_three_tournament_winner_result.html", content_data_dict)
@@ -611,14 +612,14 @@ def send_tourna_result(request, pk):
 
         send_multi_email_task.delay(data_dict, email_body, email_content)
 
-    return redirect(f'/manage-crud-tournament-result/{pk}/')
+    return redirect(f'/manage-crud-tournament-result/{tournament_slug}/')
 
 
 # invite someone who can help to the admin of tournament 
 # more than 1 user can have access to the tournament result 
 # page using this functionality 
 @login_required(login_url='login')
-def invite_organizer(request, pk):
+def invite_organizer(request, tournament_slug):
     if request.method == 'POST':
         # creating a unique token in hex format
         # saving it to the database
@@ -627,7 +628,7 @@ def invite_organizer(request, pk):
         token_id = token_obj.id
 
         # creating a unique url which can only active for 10 minutes
-        url = settings.BASE_URL + f"accept-invite-tournament-organizer/{token_id}/{token}/{pk}/"
+        url = settings.BASE_URL + f"accept-invite-tournament-organizer/{token_id}/{token}/{tournament_slug}/"
 
         # sendig the url too the email provided by the admin of tournament
         data_dict = {'team_email':request.POST.get("email")}
@@ -647,9 +648,9 @@ def invite_organizer(request, pk):
 
 
 # @login_required(login_url='login')
-def accept_invite_organizer(request, token_id, token, pk):
+def accept_invite_organizer(request, token_id, token, tournament_slug):
 
-    tournament = TournaRegistration.objects.get(id=pk)
+    tournament = TournaRegistration.objects.get(slug=tournament_slug)
     token_obj = Token.objects.get(id=token_id)
     if request.user.is_authenticated:
         # cheking if toke is espired or not
@@ -661,7 +662,7 @@ def accept_invite_organizer(request, token_id, token, pk):
             if token_obj.token == token:
                 TournamentOrganizer.objects.create(tournament=tournament, helper=request.user)
 
-                return redirect(f'/tournament/{pk}/')
+                return redirect(f'/tournament/{tournament_slug}/')
     else:
         messages.warning(request, "Please, Login :)")
         return redirect('register')

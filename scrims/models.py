@@ -1,3 +1,5 @@
+from django.db.models.signals import pre_save
+from battleground.utils import unique_slug_generate
 from django.utils import timezone
 from tournament.models import Teams, TournaRegistration
 from django.conf import settings
@@ -8,6 +10,7 @@ class ScrimsAddOnTournament(models.Model):
     tournament = models.ForeignKey(TournaRegistration, on_delete=models.CASCADE)
     admin = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     tournament_name = models.CharField(max_length=100, blank=False, null=False)
+    slug = models.SlugField(max_length=250, null=True, blank=True)
     start_at = models.DateTimeField(null=True, blank=True)
     end_at = models.DateTimeField(null=True, blank=True)
     slots = models.IntegerField()
@@ -23,6 +26,12 @@ class ScrimsAddOnTournament(models.Model):
 
     def __str__(self):
         return self.tournament_name
+
+def slug_generator(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generate(instance)
+
+pre_save.connect(slug_generator, sender=ScrimsAddOnTournament)
 
 class EnrollmentInScrim(models.Model):
     scrim_instance = models.ForeignKey(ScrimsAddOnTournament, on_delete=models.CASCADE)

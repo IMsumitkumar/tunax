@@ -8,7 +8,7 @@
 {% load custom_tags %}
 
 {% block ogmeta %}
-<meta property="og:url" content="{% url 't3scrim-detail' tournament.id scrim_instance.id %}" />
+<meta property="og:url" content="{% url 't3scrim-detail' tournament.slug scrim_instance.slug %}" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="Join {{scrim_instance.tournament_name}} with your squad under {{tournament.tournament_name}}. Register Now!" />
 <meta property="og:description" content="Join verified tournaments or Easily create and manage esports tournaments!" />
@@ -60,9 +60,9 @@
                 <div class="row layout-top-spacing">
                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12">
                         <select name="days" id="days" class="selectDaysMobile" onChange="window.location.href=this.value">
-                            <option value="{% url 'tournament-detail' tournament.id %}">Day</option>
+                            <option value="{% url 'tournament-detail' tournament.slug %}">Day</option>
                             {% for day in scrimst3_tourna %}
-                                <option value="{% url 't3scrim-detail' tournament.id day.id %}">Day {{ forloop.counter|next_number }}</option>
+                                <option value="{% url 't3scrim-detail' tournament.slug day.id %}">Day {{ forloop.counter|next_number }}</option>
                             {% endfor %}
                         </select>
                         <img style="border-radius: 0.50rem !important;" class="d-block w-100 rounded"
@@ -73,9 +73,9 @@
                             <div class="col SelectDropDownFlex">
                                 <h3 class="mt-2" style="color: azure;"><b>{{scrim_instance.tournament_name}}</b></h3>
                                 <select name="days" id="days" class="selectDays" onChange="window.location.href=this.value">
-                                    <option value="{% url 'tournament-detail' tournament.id %}">Day</option>
+                                    <option value="{% url 'tournament-detail' tournament.slug %}">Day</option>
                                     {% for day in scrimst3_tourna %}
-                                        <option value="{% url 't3scrim-detail' tournament.id day.id %}">
+                                        <option value="{% url 't3scrim-detail' tournament.slug day.slug %}">
                                          Day {{ forloop.counter|next_number }}
                                         </option>
                                     {% endfor %}
@@ -206,7 +206,7 @@
 
                     <div class="col mt-3 mx-1">
                         {% if request.user|have_tournament_owner_permission:tournament.id %}
-                            <a href="{% url 'manage-t3scrim-result' tournament.id scrim_instance.id %}"
+                            <a href="{% url 'manage-t3scrim-result' tournament.slug scrim_instance.slug %}"
                                 style="float: right; border-radius: 20px;" type="button" class="btn btn-light mb-2">
                                 <b>Submit Results</b>
                             </a>

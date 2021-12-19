@@ -17,11 +17,11 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 
 
-def scrim_detail(request, tournament_instance_id, scrim_instance_id):
+def scrim_detail(request, tournament_slug, scrim_slug):
     today = timezone.now()
-    tournament = TournaRegistration.objects.get(id=tournament_instance_id)
+    tournament = TournaRegistration.objects.get(slug=tournament_slug)
     scrimst3_tourna = ScrimsAddOnTournament.objects.filter(tournament = tournament)
-    scrim_instance = ScrimsAddOnTournament.objects.get(id = scrim_instance_id)
+    scrim_instance = ScrimsAddOnTournament.objects.get(slug = scrim_slug)
     
     try:
         enrolled_teams = EnrollmentTeamInScrim.objects.select_related('scrim_instance') \
@@ -73,15 +73,23 @@ def scrim_detail(request, tournament_instance_id, scrim_instance_id):
         'active_user_teams': active_user_teams,
         'scrimst3_tourna': scrimst3_tourna  
     }
+
+    print("tournament", tournament.id)
+    print("scrim_instance", scrim_instance.id)
+    print("enrolled_teams", enrolled_teams)
+    print("active_user_teams", active_user_teams)
+
+
+
     return render(request, 'scrims/tournament-details.html', context=context)
 
 @login_required(login_url='login')
-def register_in_scrim_form(request, tournament_instance_id, scrim_instance_id, confirmed_slots, total_slots):
+def register_in_scrim_form(request, tournament_slug, scrim_slug, confirmed_slots, total_slots):
     if request.method == 'POST':
         if int(confirmed_slots) >= int(total_slots):
             return JsonResponse({"status": False, "response": "You can not register in this tournament because slots are full."})
         else:
-            scrim_instance = ScrimsAddOnTournament.objects.get(id=scrim_instance_id)
+            scrim_instance = ScrimsAddOnTournament.objects.get(slug=scrim_slug)
             team_name = request.POST.get('team_name')
             whatsapp_number = request.POST.get('whatsapp_number') if isinstance(request.POST.get('whatsapp_number'), int) \
                                                                      else None
@@ -115,12 +123,12 @@ def register_in_scrim_form(request, tournament_instance_id, scrim_instance_id, c
                                             enrolled_teams=team_obj)            
 
             messages.success(request, f"{team_obj.team_name} registered in {scrim_instance.tournament_name} day scrim")
-            return redirect(f"/tournament/scrims/instance/{tournament_instance_id}/{scrim_instance_id}/")
-    return redirect(f"/tournament/scrims/instance/{tournament_instance_id}/{scrim_instance_id}/")
+            return redirect(f"/tournament/scrims/instance/{tournament_slug}/{scrim_slug}/")
+    return redirect(f"/tournament/scrims/instance/{tournament_slug}/{scrim_slug}/")
 
 @login_required(login_url='login')
-def register_by_existing_team_in_scrim(request, tournament_instance_id, scrim_instance_id):
-    scrim_instance = ScrimsAddOnTournament.objects.get(id=scrim_instance_id)
+def register_by_existing_team_in_scrim(request, tournament_slug, scrim_slug):
+    scrim_instance = ScrimsAddOnTournament.objects.get(slug=scrim_slug)
     if request.method == 'POST':
         team_id = request.POST.get("user_team_id")
         team = Teams.objects.get(id=team_id)
@@ -139,19 +147,19 @@ def register_by_existing_team_in_scrim(request, tournament_instance_id, scrim_in
                                         enrolled_teams=new_team)
         
         messages.success(request, f"Your Team {team.team_name} Registered successfully")
-        return redirect(f"/tournament/scrims/instance/{tournament_instance_id}/{scrim_instance_id}/")
-    return redirect(f"/tournament/scrims/instance/{tournament_instance_id}/{scrim_instance_id}/")
+        return redirect(f"/tournament/scrims/instance/{tournament_slug}/{scrim_slug}/")
+    return redirect(f"/tournament/scrims/instance/{tournament_slug}/{scrim_slug}/")
 
 
 @login_required(login_url='login')
 @allowed_only_tournament_owner
-def change_team_confirmation_status_in_t3scrim(request, team_id, tournament_instance_id, scrim_instance_id):
+def change_team_confirmation_status_in_t3scrim(request, team_id, tournament_slug, scrim_slug):
     team = Teams.objects.get(id=team_id)
     team.is_confirmed = 'CONFIRMED'
     team.save()
 
-    tournament_instance = TournaRegistration.objects.get(id=tournament_instance_id)
-    scrim_instance = ScrimsAddOnTournament.objects.get(id=scrim_instance_id)
+    tournament_instance = TournaRegistration.objects.get(slug=tournament_slug)
+    scrim_instance = ScrimsAddOnTournament.objects.get(slug=scrim_slug)
 
     email_data_dict = {
         'team_name': team.team_name,
@@ -173,18 +181,18 @@ def change_team_confirmation_status_in_t3scrim(request, team_id, tournament_inst
     send_single_email_task.delay(email_data_dict, email_body, email_content)
 
 
-    return redirect(f"/tournament/scrims/instance/{tournament_instance_id}/{scrim_instance_id}/")
+    return redirect(f"/tournament/scrims/instance/{tournament_slug}/{scrim_slug}/")
 
 
 @login_required(login_url='login')
 @allowed_only_tournament_owner
-def change_team_decline_status_in_scrim(request, team_id, tournament_instance_id, scrim_instance_id):
+def change_team_decline_status_in_scrim(request, team_id, tournament_slug, scrim_slug):
     team = Teams.objects.get(id=team_id)
     team.is_confirmed = 'DECLINED'
     team.save()
 
-    # tournament = TournaRegistration.objects.get(id=tournament_instance_id)
-    scrim_instance = ScrimsAddOnTournament.objects.get(id=scrim_instance_id)
+    # tournament = TournaRegistration.objects.get(slug=tournament_slug)
+    scrim_instance = ScrimsAddOnTournament.objects.get(slug=scrim_slug)
 
     email_data_dict = {
         'team_name': team.team_name,
@@ -201,14 +209,14 @@ def change_team_decline_status_in_scrim(request, team_id, tournament_instance_id
 
     send_single_email_task.delay(email_data_dict, email_body, email_content)
 
-    return redirect(f"/tournament/scrims/instance/{tournament_instance_id}/{scrim_instance_id}/")
+    return redirect(f"/tournament/scrims/instance/{tournament_slug}/{scrim_slug}/")
 
 
 @login_required(login_url='login')
 @allowed_only_tournament_owner
-def send_id_pass_to_confirmed_teams_in_scrim(request, tournament_instance_id, scrim_instance_id):
-    scrim_instance = ScrimsAddOnTournament.objects.get(id=scrim_instance_id)
-    tournament_instance = TournaRegistration.objects.get(id=tournament_instance_id)
+def send_id_pass_to_confirmed_teams_in_scrim(request, tournament_slug, scrim_slug):
+    scrim_instance = ScrimsAddOnTournament.objects.get(slug=scrim_slug)
+    tournament_instance = TournaRegistration.objects.get(slug=tournament_slug)
 
     try:
         enrolled_teams = EnrollmentTeamInScrim.objects.select_related('scrim_instance') \
@@ -251,16 +259,16 @@ def send_id_pass_to_confirmed_teams_in_scrim(request, tournament_instance_id, sc
         # sending emails using celery
         send_multi_email_task.delay(email_data_dict, email_body, email_content)
 
-        return redirect(f"/tournament/scrims/instance/{tournament_instance_id}/{scrim_instance_id}/")
+        return redirect(f"/tournament/scrims/instance/{tournament_slug}/{scrim_slug}/")
     else:
-        return redirect(f"/tournament/scrims/instance/{tournament_instance_id}/{scrim_instance_id}/")
+        return redirect(f"/tournament/scrims/instance/{tournament_slug}/{scrim_slug}/")
 
 
 @login_required(login_url='login')
 @allowed_only_tournament_owner
-def manage_scrim_result(request, tournament_instance_id, scrim_instance_id):
-    tournament = TournaRegistration.objects.get(id=tournament_instance_id)
-    scrim_instance = ScrimsAddOnTournament.objects.get(id=scrim_instance_id)
+def manage_scrim_result(request, tournament_slug, scrim_slug):
+    tournament = TournaRegistration.objects.get(slug=tournament_slug)
+    scrim_instance = ScrimsAddOnTournament.objects.get(slug=scrim_slug)
     try:
         enrolled_teams = EnrollmentTeamInScrim.objects.select_related('scrim_instance') \
                     .filter(scrim_instance=EnrollmentInScrim.objects.get(scrim_instance=scrim_instance))
@@ -302,8 +310,8 @@ def manage_scrim_result(request, tournament_instance_id, scrim_instance_id):
 
 @login_required(login_url='login')
 @allowed_only_tournament_owner
-def create_scrim_result(request, scrim_instance_id):
-    scrim_instance = ScrimsAddOnTournament.objects.get(id=scrim_instance_id)
+def create_scrim_result(request, scrim_slug):
+    scrim_instance = ScrimsAddOnTournament.objects.get(slug=scrim_slug)
     if request.method == 'POST':
         try:
             general_team_id = request.POST.get('general_teamid')
@@ -343,7 +351,7 @@ def create_scrim_result(request, scrim_instance_id):
 
 @login_required(login_url='login')
 @allowed_only_tournament_owner
-def update_scrim_result(request, scrim_instance_id):
+def update_scrim_result(request, scrim_slug):
     if request.method == 'POST':
         team_id = request.POST.get('sid')
 
@@ -357,7 +365,7 @@ def update_scrim_result(request, scrim_instance_id):
 
 @login_required(login_url='login')
 @allowed_only_tournament_owner
-def delete_scrim_result(request, scrim_instance_id):
+def delete_scrim_result(request, scrim_slug):
     if request.method == 'POST':
         team_id = request.POST.get('sid')
 
@@ -370,9 +378,9 @@ def delete_scrim_result(request, scrim_instance_id):
 
 @login_required(login_url='login')
 @allowed_only_tournament_owner
-def send_scrim_result(request, tournament_instance_id, scrim_instance_id):
-    scrim_instance = ScrimsAddOnTournament.objects.get(id=scrim_instance_id)
-    tournament_instance = TournaRegistration.objects.get(id=tournament_instance_id)
+def send_scrim_result(request, tournament_slug, scrim_slug):
+    scrim_instance = ScrimsAddOnTournament.objects.get(slug=scrim_slug)
+    tournament_instance = TournaRegistration.objects.get(slug=tournament_slug)
 
     try:
         teams = ScrimWinnerResult.objects.order_by('-total_points').filter(target_scrim=scrim_instance)
@@ -393,7 +401,7 @@ def send_scrim_result(request, tournament_instance_id, scrim_instance_id):
 
         content_data_dict ={
             'tournament_name': scrim_instance.tournament_name,
-            'tournament_url': f'{settings.BASE_URL}tournament/scrims/instance/{tournament_instance_id}/{scrim_instance_id}/'
+            'tournament_url': f'{settings.BASE_URL}tournament/scrims/instance/{tournament_slug}/{scrim_slug}/'
         }
 
         winner_email_body = f"Congratulations! You win the {scrim_instance.tournament_name} tournament"
@@ -414,7 +422,7 @@ def send_scrim_result(request, tournament_instance_id, scrim_instance_id):
         }
         content_data_dict ={
             'tournament_name': scrim_instance.tournament_name,
-            'tournament_url': f'{settings.BASE_URL}tournament/scrims/instance/{tournament_instance_id}/{scrim_instance_id}/'
+            'tournament_url': f'{settings.BASE_URL}tournament/scrims/instance/{tournament_slug}/{scrim_slug}/'
         }
         email_body = f"Congratulations! You win the {scrim_instance.tournament_name} tournament"
         email_content = get_template("emails/top_three_tournament_winner_result.html").render(content_data_dict)

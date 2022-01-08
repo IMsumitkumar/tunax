@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-9ipkedf_&(lldwqu&#gb%yb!(c82_4bq-gr!&xafw+revy$m)^'
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -97,7 +97,7 @@ WSGI_APPLICATION = 'battleground.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'rewardodb',
+        'NAME': 'demo_1',
         'USER': 'imsumit',
         'PASSWORD': 'kumarsumitK102938',
 	    'HOST': "database-2.c0ezoujqgmih.ap-south-1.rds.amazonaws.com",

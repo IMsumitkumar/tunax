@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'allauth.socialaccount.providers.discord',
-    'allauth.socialaccount.providers.facebook', 
+    # 'allauth.socialaccount.providers.facebook', 
     'allauth.socialaccount.providers.google',
     'tournament.apps.TournamentConfig',
     'userprofile.apps.UserprofileConfig',
@@ -74,13 +74,33 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'battleground.wsgi.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',    
+#     }
+# }
+
+# HEROKU DATABASE
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'd80b9t4eikq5gm',
+#         'USER': 'kxckyrgftexapi',
+#         'HOST': 'ec2-3-209-234-80.compute-1.amazonaws.com',
+#         'PASSWORD': '57cf94fca429673590e5210feede8ed962b0182b8262bebee8dc266d16d7e806',
+#         'PORT': '5432',
+#     }
+# }
+
+# # AWS DATABASE
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'gamespace',
-        'USER': 'sumit',
+        'NAME': 'rewardodb',
+        'USER': 'imsumit',
         'PASSWORD': 'kumarsumitK102938',
-	    'HOST':"database-1.clxidkxffzan.ap-south-1.rds.amazonaws.com",
+	    'HOST': "database-2.c0ezoujqgmih.ap-south-1.rds.amazonaws.com",
         'PORT': '5432',
     }
 }
@@ -127,8 +147,8 @@ MESSAGE_TAGS = {
 
 }
 
-
-BASE_URL = "http://rewardo.ga/"
+BASE_URL = "http://65.0.73.127/"
+# BASE_URL = "http://rewardo.ga/"
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_LOGOUT_ON_GET = True
 
@@ -165,9 +185,9 @@ LOGIN_REDIRECT_URL = "/"
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-AWS_ACCESS_KEY_ID = 'AKIAYGNQOPI75LHAXQA4'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'tunaxbucket'
+AWS_ACCESS_KEY_ID = 'AKIASWYGFVINOBSBP2GY'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'rewardo-media'
 
 AWS_QUERYSTRING_AUTH = False
 

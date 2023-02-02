@@ -97,10 +97,10 @@ WSGI_APPLICATION = 'battleground.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'demo_1',
+        'NAME': 'postgres',
         'USER': 'imsumit',
         'PASSWORD': 'kumarsumitK102938',
-	    'HOST': "database-2.c0ezoujqgmih.ap-south-1.rds.amazonaws.com",
+	    'HOST': "tunax-database.cc8kwkseyqnw.ap-south-1.rds.amazonaws.com",
         'PORT': '5432',
     }
 }
